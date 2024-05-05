@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class AuthenticationController extends Controller
@@ -9,56 +10,49 @@ class AuthenticationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function signin()
     {
-        //
+        return view('authentication.login',['title'=>'Sign In']);
+    }
+    public function create_account()
+    {
+        return view('authentication.createaccount',['title'=>'Create Account']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function authenticate(Request $request){
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return redirect()->back()->withInput()->withErrors('loginfailed');
+        }
+
+        $data = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+
+        if(auth()->attempt($data)){
+            //if user is role level 1
+            if(auth()->user()->role === 'Admin'){
+                return redirect('/test')->with('success','Sign up attempt success, welcome');
+            }
+            //if user is role level 2
+            if(auth()->user()->role === 'Movie Officer'){
+                return redirect()->route('movie-index')->with('success','Sign up attempt success, welcome');
+            }
+            //if user is role level 3
+            if(auth()->user()->role === 'Cashier'){
+                return redirect()->route('cashier-index')->with('success','Sign up attempt success, welcome');
+            }
+            // return redirect()-with('success','Sign up attempt success, welcome');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function logout(){
+        auth()->logout();
+        return redirect('sign-in')->with('message','you logging out');
     }
 }

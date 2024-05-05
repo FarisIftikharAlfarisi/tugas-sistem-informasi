@@ -10,4 +10,4 @@
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
       {{-- Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> --}}
     </div>
-  </footer><!-- End Footer -->
+</footer><!-- End Footer -->

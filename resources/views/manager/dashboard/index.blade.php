@@ -4,7 +4,7 @@
     <div class="row">
         <!-- Left side columns -->
         <div class="col-lg-12">
-        `<div class="row">
+        <div class="row">
              <!-- Sales Card -->
             <div class="col-xxl-4 col-md-6">
                 <div class="card info-card sales-card">
