@@ -7,16 +7,21 @@
 
 ```sh
 git clone https://github.com/FarisIftikharAlfarisi/tugas-sistem-informasi.git
+```
+
+2.  Change the directory to the project
+
+```sh
 cd tugas-sistem-informasi
 ```
 
-2.  Install composer package
+3.  Install composer package
 
 ```sh
 composer install
 ```
 
-3.  Copy or rename `.env.example` to `.env`
+4.  Copy or rename `.env.example` to `.env`
 
 ```sh
 cp .env.example .env
@@ -29,7 +34,7 @@ php artisan migrate
 
 <br/>
 
-6.  Run the project
+7.  Run the project
 
 ```sh
 php artisan serve
