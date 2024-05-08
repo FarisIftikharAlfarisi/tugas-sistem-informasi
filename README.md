@@ -39,6 +39,12 @@ php artisan migrate
 php artisan db:seed
 ```
 
+- You might want to generate key
+
+```sh
+php artisan key:generate
+```
+
 
 <br/>
 
