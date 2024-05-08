@@ -26,15 +26,24 @@ composer install
 ```sh
 cp .env.example .env
 ```
-5.  Insert your database credentials & server port in `.env`
-6.  Run the migration script (Make sure you already made the database!)
+5.  If you using windows just copy or rename file `.env.example` to `.env`
+6.  Insert your database credentials & server port in `.env`
+7.  Make sure u have the database 
+8.  Run the migration script
 ```sh
 php artisan migrate
 ```
 
+-   You might want to seed the tables
+
+```sh
+php artisan db:seed
+```
+
+
 <br/>
 
-7.  Run the project
+9.  Run the project
 
 ```sh
 php artisan serve
