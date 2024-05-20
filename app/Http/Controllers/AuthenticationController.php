@@ -37,7 +37,7 @@ class AuthenticationController extends Controller
         if(auth()->attempt($data)){
             //if user is role level 1
             if(auth()->user()->role === 'Admin'){
-                return redirect('/test')->with('success','Sign up attempt success, welcome');
+                return redirect()->route('dashboard_manager')->with('success','Sign up attempt success, welcome');
             }
             //if user is role level 2
             if(auth()->user()->role === 'Movie Officer'){

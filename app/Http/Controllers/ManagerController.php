@@ -4,24 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CashierController extends Controller
+class ManagerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('cashier.index',['title' => 'Cashier Dashboard']);
-    }
-
-    public function order()
-    {
-        return view('cashier.order',['title' => 'Order | Cashier Dashboard']);
-    }
-
-    public function save_order(Request $request){
-        $selectedSeats = json_decode($request->input('selectedSeats'));
-        dd($selectedSeats);
+        return view('manager.dashboard.index',['title'=>'Dashboard']);
     }
 
     /**
@@ -29,7 +19,7 @@ class CashierController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -37,7 +27,7 @@ class CashierController extends Controller
      */
     public function store(Request $request)
     {
-
+        //
     }
 
     /**
