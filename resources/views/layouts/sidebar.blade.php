@@ -3,19 +3,27 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item active">
-        <a href="{{ route('cashier-index') }}" class="nav-link collapsed active" >
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-      <li class="nav-item">
-        <a href="{{ route('cashier-order') }}" class="nav-link collapsed">
-          <i class="bi bi-currency-dollar"></i>
-          <span>Order</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
+        @if(Auth::user()->role == "Cashier")
+        <li class="nav-item active">
+          <a href="{{ route('cashier-index') }}" class="nav-link collapsed active" >
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+          <a href="{{ route('cashier-order') }}" class="nav-link collapsed">
+            <i class="bi bi-currency-dollar"></i>
+            <span>Order</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+        @endif
 
+      @if (Auth::user()->role == "Movie Officer")
+        <a href="{{ route('movie-index') }}" class="nav-link collapsed active" >
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+        </a>
+      @endif
 
       {{-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">

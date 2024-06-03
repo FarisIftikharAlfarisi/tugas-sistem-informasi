@@ -23,14 +23,25 @@
   <link href="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/boxicons/css/boxicons.css') }}" rel="stylesheet">
   <link href="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
   <link href="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+  <link href="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+  <link href="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/quill/quill.core.css') }}" rel="stylesheet">
   <link href="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
   <link href="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+
+  <!-- Include Bootstrap DateTimePicker CDN -->
+	<link href= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 
   <!-- Template Main CSS File -->
   <link href="{{ asset('DashboardTemplate/NiceAdmin/assets/css/style.css') }}" rel="stylesheet">
 
   <!-- Links-->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  {{-- css --}}
+  <link rel="stylesheet" href="{{ asset('DashboardTemplate/NiceAdmin/assets/css/style.css') }}">
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -65,8 +76,40 @@
   <script src="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/tinymce/tinymce.min.js') }}"></script>
   <script src="{{ asset('DashboardTemplate/NiceAdmin/assets/vendor/php-email-form/validate.js') }}"></script>
 
+  {{-- timepicker asset cdn --}}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
+  <!-- Include Moment.js CDN -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
   <!-- Template Main JS File -->
   <script src="{{ asset('DashboardTemplate/NiceAdmin/assets/js/main.js') }}"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+  {{-- initialize timepicker - Movie --}}
+  <script>
+    $('#datetime_start').datetimepicker({
+        format: 'hh:mm:ss a'
+    });
+    $('#datetime_end').datetimepicker({
+        format: 'hh:mm:ss a'
+    });
+    $('#datetime').datetimepicker({
+        format: 'hh:mm:ss a'
+    });
+  </script>
+
+  {{-- Initialize text editor - Movie --}}
+  <script>
+    const quill = new Quill('#editor', {
+      theme: 'snow'
+    });
+  </script>
+
+  <script src="js/main.js"></script>
 
 </body>
 

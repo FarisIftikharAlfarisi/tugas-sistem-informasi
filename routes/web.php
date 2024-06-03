@@ -36,7 +36,8 @@ Route::group(['middleware'=>['auth', 'role:Admin']],function () {
 
 //route for role Movie Officer
 Route::group(['middleware'=>['auth', 'role:Movie Officer']],function () {
-    Route::get('/dasboard/cinema',[MovieManagementController::class,'index'])->name('movie-index');
+    Route::get('/dashboard/movie',[MovieManagementController::class,'index'])->name('movie-index');
+    Route::get('/dashboard/movie/new-movies',[MovieManagementController::class,'create'])->name('movie-new');
 });
 //end of route
 

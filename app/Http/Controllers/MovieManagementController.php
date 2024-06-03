@@ -19,7 +19,8 @@ class MovieManagementController extends Controller
      */
     public function create()
     {
-        //
+        $title = "New Movies";
+        return view('movie.create-film',compact('title'));
     }
 
     /**
