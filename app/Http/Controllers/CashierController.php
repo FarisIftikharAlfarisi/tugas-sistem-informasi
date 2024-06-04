@@ -16,11 +16,14 @@ class CashierController extends Controller
 
     public function order()
     {
-        return view('cashier.order',['title' => 'Order | Cashier Dashboard']);
+        return view('cashier.order',['title' => 'Order - Cashier Dashboard']);
     }
 
     public function save_order(Request $request){
         $selectedSeats = json_decode($request->input('selectedSeats'));
+
+
+
         dd($selectedSeats);
     }
 

@@ -19,10 +19,24 @@
         @endif
 
       @if (Auth::user()->role == "Movie Officer")
-        <a href="{{ route('movie-index') }}" class="nav-link collapsed active" >
-            <i class="bi bi-grid"></i>
-            <span>Dashboard</span>
-        </a>
+        <li class="nav-item">
+            <a href="{{ route('movie-index') }}" class="nav-link collapsed active" >
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('movie-movies') }}" class="nav-link collapsed active" >
+                <i class="bi bi-film"></i>
+                <span>Film</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('movie-theater') }}" class="nav-link collapsed active" >
+                <i class="bi bi-door-open"></i>
+                <span>Studio</span>
+            </a>
+        </li>
       @endif
 
       {{-- <li class="nav-item">
