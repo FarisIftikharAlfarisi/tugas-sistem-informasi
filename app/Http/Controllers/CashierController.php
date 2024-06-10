@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Seats;
 use Illuminate\Http\Request;
 
 class CashierController extends Controller
@@ -16,7 +17,8 @@ class CashierController extends Controller
 
     public function order()
     {
-        return view('cashier.order',['title' => 'Order - Cashier Dashboard']);
+        $seats = Seats::all();
+        return view('cashier.order',['title' => 'Order - Cashier Dashboard'], compact('seats'));
     }
 
     public function save_order(Request $request){

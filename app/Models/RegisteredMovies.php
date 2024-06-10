@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RegisteredMovies extends Model
 {
     use HasFactory;
-    
+
     protected $primaryKey = 'movie_id';
 
     protected $fillable = [

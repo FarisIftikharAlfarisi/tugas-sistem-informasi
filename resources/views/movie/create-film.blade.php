@@ -110,7 +110,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mt-2">
+                        {{-- <div class="row mt-2">
                             <div class="col-md-4">
                                 <label for="" class="form-label @error('mulai_tayang') is-invalid @enderror"> Mulai</label>
                                 <input class="form-control" type="text" id="datetime_start" name="mulai_tayang" required autofocus value="{{ old('mulai_tayang') }}">
@@ -130,7 +130,7 @@
                                     </div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row mt-2">
                             <div class="col-md-6">

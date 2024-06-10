@@ -15,4 +15,9 @@ class Theater extends Model
         'nama_theater',
         'status_availability'
     ];
+
+    public function reg_movies(){
+        return $this->hasMany(RegisteredMovies::class);
+    }
+
 }
