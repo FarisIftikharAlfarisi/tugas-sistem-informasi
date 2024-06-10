@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MovieManagementController;
+use App\Http\Controllers\FilmController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,11 +38,13 @@ Route::group(['middleware'=>['auth', 'role:Admin']],function () {
 
 //route for role Movie Officer
 Route::group(['middleware'=>['auth', 'role:Movie Officer']],function () {
-    Route::get('/dashboard/movie',[MovieManagementController::class,'index'])->name('movie-index');
-    Route::get('/dashboard/movie/movies',[MovieManagementController::class,'movies'])->name('movie-movies');
-    Route::get('/dashboard/movie/new-movies',[MovieManagementController::class,'create_movies'])->name('movie-new-movies');
-    Route::post('/dashboard/movie/new-movies',[MovieManagementController::class,'store_movies'])->name('store-movies');
-    Route::get('/dashboard/movie/edit-movies/{id}',[MovieManagementController::class,'edit_movies'])->name('movie-edit-movies');
+    Route::resource('/dashboard/movie/movies',FilmController::class);
+    Route::get('/dashboard/movie',[FilmController::class,'index'])->name('movie-index');
+    Route::get('/dashboard/movie/movies',[FilmController::class,'movies'])->name('movie-movies');
+    Route::get('/dashboard/movie/new-movies',[FilmController::class,'create'])->name('movie-new-movies');
+    Route::post('/dashboard/movie/new-movies',[FilmController::class,'store'])->name('store-movies');
+    Route::get('/dashboard/movie/edit-movies/{id}',[FilmController::class,'edit'])->name('movie-edit-movies');
+    Route::resource('/dashboard/movie/theater', MovieManagementController::class);
     Route::get('/dashboard/movie/theater',[MovieManagementController::class,'theater'])->name('movie-theater');
     Route::get('/dashboard/movie/new-theater',[MovieManagementController::class,'create_theater'])->name('movie-new-theater');
     Route::post('/dashboard/movie/new-theater',[MovieManagementController::class,'store_theater'])->name('store-theater');

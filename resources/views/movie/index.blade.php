@@ -41,12 +41,12 @@
             <td>{{ $data->status_approval }}</td>
             <td>{{ $data->tanggal_approval }}</td>
             <td>
-                <a href="{{ route('movie-edit-movies',['id' => $data->movie_id]) }}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a>
-                <form action="" method="POST"> 
-                    @method('DELETE')
+                <a href="{{ url('/dashboard/movie/movies/' . $data->movie_id. '/edit') }}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a>
+                <form class="d-inline" action="{{ url('/dashboard/movie/movies/' . $data->movie_id) }}" method="Post"> 
                     @csrf
-                    <button class="btn btn-danger" onclick="return confirm('Apakah Yakin?')"><i class="bi bi-trash"></i><span data-feather="x-circle"></span></button>
-                   </form> 
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Yakin?')"><i class="bi bi-trash"></i><span data-feather="x-circle"></span></button>
+                </form> 
             </td>
         </tr>
         @endforeach
