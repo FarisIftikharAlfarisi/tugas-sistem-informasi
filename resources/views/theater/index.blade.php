@@ -2,7 +2,11 @@
 @section('content')
 <h1>Studio</h1>
 <a href="{{ route('movie-new-theater') }}" class="btn btn-primary">New Theater</a>
-
+@if (session()->has('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="card">
 <table class="table">
     <tr>

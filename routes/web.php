@@ -39,6 +39,8 @@ Route::group(['middleware'=>['auth', 'role:Movie Officer']],function () {
     Route::get('/dashboard/movie',[MovieManagementController::class,'index'])->name('movie-index');
     Route::get('/dashboard/movie/movies',[MovieManagementController::class,'movies'])->name('movie-movies');
     Route::get('/dashboard/movie/new-movies',[MovieManagementController::class,'create_movies'])->name('movie-new-movies');
+    Route::post('/dashboard/movie/new-movies',[MovieManagementController::class,'store_movies'])->name('store-movies');
+    Route::get('/dashboard/movie/edit-movies/{id}',[MovieManagementController::class,'edit_movies'])->name('movie-edit-movies');
     Route::get('/dashboard/movie/theater',[MovieManagementController::class,'theater'])->name('movie-theater');
     Route::get('/dashboard/movie/new-theater',[MovieManagementController::class,'create_theater'])->name('movie-new-theater');
     Route::post('/dashboard/movie/new-theater',[MovieManagementController::class,'store_theater'])->name('store-theater');

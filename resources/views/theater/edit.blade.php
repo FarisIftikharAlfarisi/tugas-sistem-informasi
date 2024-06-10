@@ -10,6 +10,7 @@
               <form action="{{ route('store-theater') }}" method="POST">
                 @csrf
                 <div class="row mb-3">
+                  <label for="" class="col-sm-2 col-form-label">ID Studio: {{ $data_studio->theater_id }}</label>
                   <label for="" class="col-sm-2 col-form-label">Nama Studio</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" id="nama_theater" name="nama_theater" value="{{ $data_studio->nama_theater }}">
