@@ -148,24 +148,42 @@ class MovieManagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $title = "Edit Theater | Movie Management";
+        $data_studio = Theater::where('theater_id',$id)->first();
+        return view('theater.edit',compact(['title','data_studio']))->with('data',$data_studio);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,  $id)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'nama_theater' => 'required',
+            'status' => 'required'
+         ]);
+ 
+         if($validator->fails()){
+             return redirect()->back()->withErrors($validator);
+         }
+ 
+         $data['nama_theater'] = $request->nama_theater;
+         $data['status_availability'] = $request->status;
+ 
+         theater::where('theater_id', $id)->update($data);
+
+         //redirect to index
+         return redirect()->to('/dashboard/movie/theater')->with('success', 'Studio Berhasil DiEdit!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        theater::where('theater_id', $id)->delete(); 
+        return redirect()->to('/dashboard/movie/theater')->with('success', 'Studio Berhasil Dihapus!');
     }
 }

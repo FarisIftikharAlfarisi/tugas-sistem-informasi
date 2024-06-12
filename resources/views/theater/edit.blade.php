@@ -7,8 +7,9 @@
               <h5 class="card-title">Ubah Informasi Studio</h5>
 
               <!-- Horizontal Form -->
-              <form action="{{ route('store-theater') }}" method="POST">
+              <form action="{{ url('/dashboard/movie/theater/' . $data->theater_id) }}" method="POST">
                 @csrf
+                @method('PUT')
                 <div class="row mb-3">
                   <label for="" class="col-sm-2 col-form-label">ID Studio: {{ $data_studio->theater_id }}</label>
                   <label for="" class="col-sm-2 col-form-label">Nama Studio</label>

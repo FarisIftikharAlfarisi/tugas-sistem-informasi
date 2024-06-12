@@ -19,8 +19,12 @@
         <td>{{ $data->nama_theater }}</td>
         <td>{{ $data->status_availability }}</td>
         <td>
-            <a href="{{ route('movie-edit-theater',['id' => $data->theater_id]) }}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a>
-            <a href="" class="btn btn-danger"> <i class="bi bi-trash"></i> </a>
+            <a href="{{ url('/dashboard/movie/theater/' . $data->theater_id) . '/edit' }}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a>
+            <form class="d-inline" action="{{ url('/dashboard/movie/theater/' . $data->theater_id) }}" method="Post"> 
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Yakin?')"><i class="bi bi-trash"></i><span data-feather="x-circle"></span></button>
+            </form>
         </td>
     </tr>
     @endforeach
