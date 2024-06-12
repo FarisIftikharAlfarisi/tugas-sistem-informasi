@@ -38,17 +38,26 @@ Route::group(['middleware'=>['auth', 'role:Admin']],function () {
 
 //route for role Movie Officer
 Route::group(['middleware'=>['auth', 'role:Movie Officer']],function () {
-    Route::resource('/dashboard/movie/movies',FilmController::class);
+
+    // Route::resource('/dashboard/movie/movies',FilmController::class);
+
     Route::get('/dashboard/movie',[FilmController::class,'index'])->name('movie-index');
     Route::get('/dashboard/movie/movies',[FilmController::class,'movies'])->name('movie-movies');
     Route::get('/dashboard/movie/new-movies',[FilmController::class,'create'])->name('movie-new-movies');
-    Route::post('/dashboard/movie/new-movies',[FilmController::class,'store'])->name('store-movies');
+    Route::post('/dashboard/movie/store-process',[FilmController::class,'store'])->name('store-movie');
     Route::get('/dashboard/movie/edit-movies/{id}',[FilmController::class,'edit'])->name('movie-edit-movies');
+
     Route::resource('/dashboard/movie/theater', MovieManagementController::class);
     Route::get('/dashboard/movie/theater',[MovieManagementController::class,'theater'])->name('movie-theater');
     Route::get('/dashboard/movie/new-theater',[MovieManagementController::class,'create_theater'])->name('movie-new-theater');
     Route::post('/dashboard/movie/new-theater',[MovieManagementController::class,'store_theater'])->name('store-theater');
     Route::get('/dashboard/movie/edit-theater/{id}',[MovieManagementController::class,'edit_theater'])->name('movie-edit-theater');
+    //end theater
+
+    //schedule
+    Route::get('dashboard/movie/schedule',[MovieManagementController::class,'schedule'])->name('movie-schedule');
+    Route::get('dashboard/movie/schedule/new-schedule',[MovieManagementController::class,'create_schedule'])->name('movie-new-schedule');
+    //end schedule
 });
 //end of route
 

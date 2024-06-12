@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
     <div class="row">
-        <form action="{{ route('store-movies')  }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('store-movie')  }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="col-lg-13 gap-3">
 
@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="">Poster </label>
-                                <input type="file" class="form-control mt-2 @error('poster') is-invalid @enderror" id="poster" name="poster"
+                                <input type="file" class="form-control mt-2 @error ('poster') is-invalid @enderror" id="poster" name="poster"
                                     placeholder="Pilih Poster">
                                 @error('poster')
                                     <div class="invalid-feedback">
@@ -101,7 +101,7 @@
                                     <option>R (Remaja)</option>
                                     <option>D (Dewasa)</option>
                                     <option>BO (Bimbingan Orang Tua)</option>
-                                 
+
                                 </select>
                                 @error('sensor')
                                     <div class="invalid-feedback">
@@ -132,7 +132,7 @@
                             </div>
                         </div> --}}
 
-                        <div class="row mt-2">
+                        {{-- <div class="row mt-2">
                             <div class="col-md-6">
                                 <label for="" class="form-label ">Status</label>
                                 <select id="status" name="status" class="form-select" >
@@ -141,11 +141,11 @@
                             </div>
                             <div class= "col-md-6">
                                 <label for="" class="form-label">Tanggal diterima</label>
-                                <select id="diterima" name="diterima" class="form-select" >   
+                                <select id="diterima" name="diterima" class="form-select" >
                                     <option >none</option>
                                 </select>
                             </div>
-                            <div>
+                        <div> --}}
 
                             </div>
                         </div>
@@ -159,9 +159,9 @@
                                     </div>
                                 </div>
 
-                                <!-- Quill Editor Default 
+                                <!-- Quill Editor Default
                                 <div name="deskripsi" class="quill-editor-default @error('deskripsi') is-invalid @enderror"  {{ old('deskripsi') }} >
-                                    
+
                                     @error('deskripsi')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -172,7 +172,7 @@
 
                             </div>
                         </div>
-    
+
 
                         <div class="text-center" >
                             <button type="reset" class="btn btn-danger">Batal</button>
@@ -181,7 +181,7 @@
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
     </form>
-    </div>
+</div>
 @endsection

@@ -15,8 +15,8 @@ class MovieManagementController extends Controller
      */
     public function index()
     {
-        
-        return view('movie.dashboard-movies',['title'=>'Movie Management']);
+
+        return view('movie.index',['title'=>'Movie Management']);
     }
 
     //start of movies controlling
@@ -24,55 +24,58 @@ class MovieManagementController extends Controller
     {
         $data_movie = RegisteredMovies::all();
         $title = "New Movies | Movie Management";
-        return view('movie.index',compact('title', 'data_movie'));
+        return view('movie.dashboard-movies',compact('title', 'data_movie'));
     }
+
     public function create_movies()
     {
         $title = "New Movies | Movie Management";
         return view('movie.create-film',compact('title'));
     }
+
     public function edit_movies($id){
         $title = "Edit Movies | Movie Management";
         $data_movie = RegisteredMovies::find($id);
         return view('movie.edit-film',compact(['title','data_movie']));
     }
-    public function store_movies(Request $request){
-        $data = $request->validate([
-            'poster' => 'required|image|file|max:1024|mimes:jpeg,jpg,png',
-            'judul' => 'required',
-            'sutradara' => 'required',
-            'produser'  => 'required',
-            'bahasa'  => 'required',
-            'bahasa_sub'  => 'required',
-            'genre'  => 'required',
-            'sensor'  => 'required',
-            'mulai_tayang'  => 'required',
-            'selesai_tayang' => 'required',
-            'deskripsi' => 'required',
-            'status' => 'required',
-            'diterima' => 'required'
-        ]);
 
-        $data['poster'] = $request->file('poster')->store('movies-poster');
-        $data['judul'] = $request->judul;
-        $data['sutradara'] = $request->sutradara;
-        $data['produser'] = $request->produser;
-        $data['bahasa'] = $request->bahasa;
-        $data['bahasa_subtitle'] = $request->bahasa_sub;
-        $data['genre'] = $request->genre;
-        $data['sensor'] = $request->sensor;
-        $data['show_start'] = $request->mulai_tayang;
-        $data['show_end'] = $request->selesai_tayang;
-        $data['deskripsi'] = $request->deskripsi;
-        $data['status_approval'] = $request->status;
-        $data['tanggal_approval'] = $request->diterima;
+    // public function store_movies(Request $request){
+    //     $data = $request->validate([
+    //         'poster' => 'required|image|file|max:1024|mimes:jpeg,jpg,png',
+    //         'judul' => 'required',
+    //         'sutradara' => 'required',
+    //         'produser'  => 'required',
+    //         'bahasa'  => 'required',
+    //         'bahasa_sub'  => 'required',
+    //         'genre'  => 'required',
+    //         'sensor'  => 'required',
+    //         'mulai_tayang'  => 'required',
+    //         'selesai_tayang' => 'required',
+    //         'deskripsi' => 'required',
+    //         'status' => 'required',
+    //         'diterima' => 'required'
+    //     ]);
 
-        RegisteredMovies::create($data);
+    //     $data['poster'] = $request->file('poster')->store('movies-poster');
+    //     $data['judul'] = $request->judul;
+    //     $data['sutradara'] = $request->sutradara;
+    //     $data['produser'] = $request->produser;
+    //     $data['bahasa'] = $request->bahasa;
+    //     $data['bahasa_subtitle'] = $request->bahasa_sub;
+    //     $data['genre'] = $request->genre;
+    //     $data['sensor'] = $request->sensor;
+    //     $data['show_start'] = $request->mulai_tayang;
+    //     $data['show_end'] = $request->selesai_tayang;
+    //     $data['deskripsi'] = $request->deskripsi;
+    //     $data['status_approval'] = $request->status;
+    //     $data['tanggal_approval'] = $request->diterima;
 
-        //redirect to index
-        return redirect()->route('movie-movies')->with('success', 'Film Berhasil Ditambahkan!');
-    
-    }
+    //     RegisteredMovies::create($data);
+
+    //     //redirect to index
+    //     return redirect()->route('movie-movies')->with('success', 'Film Berhasil Ditambahkan!');
+
+    // }
     //end of movies controlling
 
     public function delete_movies($id)
@@ -101,7 +104,7 @@ class MovieManagementController extends Controller
         return view('theater.edit',compact(['title','data_studio']))->with('data',$data_studio);
     }
 
-    public function store_theater(Request $request){    
+    public function store_theater(Request $request){
         $validator = Validator::make($request->all(),[
            'nama_theater' => 'required',
            'status' => 'required'
@@ -120,6 +123,19 @@ class MovieManagementController extends Controller
 
     //end of theater controlling
 
+
+    //schedule controlling
+
+    public function schedule(){
+        return view('movie.dashboard-schedule',['title'=>'Schedule | Movie Management ']);
+    }
+    public function create_schedule(){
+        $title = 'New Schedule | Movie Management';
+        $data_movie = RegisteredMovies::all();
+        return view('movie.create-schedule',compact(['title','data_movie']));
+    }
+
+    //end of schedule controlling
 
     /**
      * Show the form for creating a new resource.
@@ -164,14 +180,14 @@ class MovieManagementController extends Controller
             'nama_theater' => 'required',
             'status' => 'required'
          ]);
- 
+
          if($validator->fails()){
              return redirect()->back()->withErrors($validator);
          }
- 
+
          $data['nama_theater'] = $request->nama_theater;
          $data['status_availability'] = $request->status;
- 
+
          theater::where('theater_id', $id)->update($data);
 
          //redirect to index
@@ -183,7 +199,7 @@ class MovieManagementController extends Controller
      */
     public function destroy($id)
     {
-        theater::where('theater_id', $id)->delete(); 
+        theater::where('theater_id', $id)->delete();
         return redirect()->to('/dashboard/movie/theater')->with('success', 'Studio Berhasil Dihapus!');
     }
 }

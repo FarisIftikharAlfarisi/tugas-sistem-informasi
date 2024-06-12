@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RegisteredMovies;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class FilmController extends Controller
@@ -13,14 +14,16 @@ class FilmController extends Controller
      */
     public function index()
     {
-        return view('movie.dashboard-movies',['title'=>'Movie Management']);
+        // $data_movie = RegisteredMovies::all();
+        $title = "Movie Management";
+        return view('movie.index',compact(['title']));
     }
 
     public function movies()
     {
         $data_movie = RegisteredMovies::all();
         $title = "New Movies | Movie Management";
-        return view('movie.index',compact('title', 'data_movie'));
+        return view('movie.dashboard-movies',compact('title', 'data_movie'));
     }
     /**
      * Show the form for creating a new resource.
@@ -36,8 +39,8 @@ class FilmController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'poster' => 'required|image|file|max:1024|mimes:jpeg,jpg,png',
+        $validator = Validator::make($request->all(),[
+            'poster' => 'required|image|file|max:4096|mimes:jpeg,jpg,png',
             'judul' => 'required',
             'sutradara' => 'required',
             'produser'  => 'required',
@@ -52,7 +55,19 @@ class FilmController extends Controller
             'diterima' => 'required'
         ]);
 
-        $data['poster'] = $request->file('poster')->store('movies-poster');
+        if($validator->fails()){
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+
+        dd($request->all());
+
+        $file_poster = $request->file('poster');
+        $nama_file = $file_poster->getClientOriginalName();
+        $path = 'img/posters/'.$nama_file;
+
+        Storage::disk('public')->put($path,file_get_contents($file_poster));
+
+        $data['poster'] = $nama_file;
         $data['judul'] = $request->judul;
         $data['sutradara'] = $request->sutradara;
         $data['produser'] = $request->produser;
@@ -63,8 +78,6 @@ class FilmController extends Controller
         $data['show_start'] = $request->mulai_tayang;
         $data['show_end'] = $request->selesai_tayang;
         $data['deskripsi'] = $request->deskripsi;
-        $data['status_approval'] = $request->status;
-        $data['tanggal_approval'] = $request->diterima;
 
         RegisteredMovies::create($data);
 
@@ -136,7 +149,7 @@ class FilmController extends Controller
      */
     public function destroy($id)
     {
-        RegisteredMovies::where('movie_id', $id)->delete(); 
+        RegisteredMovies::where('movie_id', $id)->delete();
         return redirect()->to('/dashboard/movie/movies')->with('success', 'Film Berhasil Dihapus!');
     }
 }
