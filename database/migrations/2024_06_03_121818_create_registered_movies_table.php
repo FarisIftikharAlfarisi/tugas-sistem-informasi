@@ -23,8 +23,9 @@ return new class extends Migration
             $table->string('sensor');
             $table->string('durasi');
             $table->integer('harga');
-            $table->string('deskripsi');
-            $table->string('status_approval');
+            $table->string('deskripsi',5000);
+            $table->string('status_approval')->nullable();
+            $table->date('tanggal_approval')->nullable();
             $table->timestamps();
         });
     }

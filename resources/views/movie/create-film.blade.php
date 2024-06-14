@@ -19,11 +19,21 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="" class="form-label @error('judul') is-invalid @enderror">Judul</label>
                                 <input type="text" class="form-control" id="judul" name="judul"
                                     placeholder="Judul Film" required autofocus value="{{ old('judul') }}">
                                     @error('judul')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label for="" class="form-label @error('durasi') is-invalid @enderror">Durasi</label>
+                                <input type="text" class="form-control" id="durasi" name="durasi"
+                                    placeholder="durasi film" required autofocus value="{{ old('durasi') }}">
+                                    @error('durasi')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -104,6 +114,16 @@
 
                                 </select>
                                 @error('sensor')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label for="" class="form-label @error('harga_tiket') is-invalid @enderror">Harga per tiket</label>
+                                <input type="text" class="form-control" id="harga_tiket" name="harga_tiket"
+                                    placeholder="Harga Tiket" required autofocus value="{{ old('harga_tiket') }}">
+                                    @error('harga_tiket')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>

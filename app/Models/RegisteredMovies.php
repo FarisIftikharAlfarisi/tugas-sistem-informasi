@@ -20,9 +20,9 @@ class RegisteredMovies extends Model
         'bahasa_subtitle',
         'genre',
         'sensor',
-        'show_start',
-        'show_end',
+        'harga',
         'deskripsi',
+        'durasi',
         'status_approval',
         'tanggal_approval'
     ];

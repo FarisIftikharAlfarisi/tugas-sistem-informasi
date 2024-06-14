@@ -21,7 +21,7 @@ class FilmController extends Controller
 
     public function movies()
     {
-        $data_movie = RegisteredMovies::all();
+        $data_movie = RegisteredMovies::orderBy('created_at','asc')->get();
         $title = "New Movies | Movie Management";
         return view('movie.dashboard-movies',compact('title', 'data_movie'));
     }
@@ -40,7 +40,7 @@ class FilmController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'poster' => 'required|image|file|max:4096|mimes:jpeg,jpg,png',
+            'poster' => 'required|image|file|max:4096|mimes:jpeg,jpg,png,jfif',
             'judul' => 'required',
             'sutradara' => 'required',
             'produser'  => 'required',
@@ -48,24 +48,19 @@ class FilmController extends Controller
             'bahasa_sub'  => 'required',
             'genre'  => 'required',
             'sensor'  => 'required',
-            'mulai_tayang'  => 'required',
-            'selesai_tayang' => 'required',
+            'durasi' => 'required',
+            'harga_tiket' => 'required',
             'deskripsi' => 'required',
-            'status' => 'required',
-            'diterima' => 'required'
         ]);
 
         if($validator->fails()){
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
-        dd($request->all());
 
         $file_poster = $request->file('poster');
         $nama_file = $file_poster->getClientOriginalName();
         $path = 'img/posters/'.$nama_file;
-
-        Storage::disk('public')->put($path,file_get_contents($file_poster));
 
         $data['poster'] = $nama_file;
         $data['judul'] = $request->judul;
@@ -75,10 +70,15 @@ class FilmController extends Controller
         $data['bahasa_subtitle'] = $request->bahasa_sub;
         $data['genre'] = $request->genre;
         $data['sensor'] = $request->sensor;
-        $data['show_start'] = $request->mulai_tayang;
-        $data['show_end'] = $request->selesai_tayang;
+        $data['durasi'] = $request->durasi;
+        $data['harga'] = $request->harga_tiket;
         $data['deskripsi'] = $request->deskripsi;
+        $data['status_approval'] = null;
+        $data['tanggal_approval'] = null;
 
+        // dd($data);
+
+        Storage::disk('public')->put($path,file_get_contents($file_poster));
         RegisteredMovies::create($data);
 
         //redirect to index

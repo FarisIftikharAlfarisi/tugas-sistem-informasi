@@ -40,7 +40,6 @@ Route::group(['middleware'=>['auth', 'role:Admin']],function () {
 Route::group(['middleware'=>['auth', 'role:Movie Officer']],function () {
 
     // Route::resource('/dashboard/movie/movies',FilmController::class);
-
     Route::get('/dashboard/movie',[FilmController::class,'index'])->name('movie-index');
     Route::get('/dashboard/movie/movies',[FilmController::class,'movies'])->name('movie-movies');
     Route::get('/dashboard/movie/new-movies',[FilmController::class,'create'])->name('movie-new-movies');

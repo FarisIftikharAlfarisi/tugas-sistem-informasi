@@ -19,25 +19,24 @@ class MovieManagementController extends Controller
         return view('movie.index',['title'=>'Movie Management']);
     }
 
+    //movies controlling pindah ke controller FilmController
     //start of movies controlling
-    public function movies()
-    {
-        $data_movie = RegisteredMovies::all();
-        $title = "New Movies | Movie Management";
-        return view('movie.dashboard-movies',compact('title', 'data_movie'));
-    }
+    // public function movies(){
+    //     $data_movie = RegisteredMovies::all();
+    //     $title = "New Movies | Movie Management";
+    //     return view('movie.dashboard-movies',compact('title', 'data_movie'));
+    // }
 
-    public function create_movies()
-    {
-        $title = "New Movies | Movie Management";
-        return view('movie.create-film',compact('title'));
-    }
+    // public function create_movies(){
+    //     $title = "New Movies | Movie Management";
+    //     return view('movie.create-film',compact('title'));
+    // }
 
-    public function edit_movies($id){
-        $title = "Edit Movies | Movie Management";
-        $data_movie = RegisteredMovies::find($id);
-        return view('movie.edit-film',compact(['title','data_movie']));
-    }
+    // public function edit_movies($id){
+    //     $title = "Edit Movies | Movie Management";
+    //     $data_movie = RegisteredMovies::find($id);
+    //     return view('movie.edit-film',compact(['title','data_movie']));
+    // }
 
     // public function store_movies(Request $request){
     //     $data = $request->validate([
@@ -78,11 +77,10 @@ class MovieManagementController extends Controller
     // }
     //end of movies controlling
 
-    public function delete_movies($id)
-    {
-        RegisteredMovies::where('id_movie', $id)->delete();
-        return redirect()->route('movie-movies')->with('success', 'Film Berhasil Dihapus!');
-    }
+    // public function delete_movies($id){
+    //     RegisteredMovies::where('id_movie', $id)->delete();
+    //     return redirect()->route('movie-movies')->with('success', 'Film Berhasil Dihapus!');
+    // }
     /**
      * below is Theather Controlling section
     */
