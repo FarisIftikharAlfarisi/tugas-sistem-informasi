@@ -26,4 +26,9 @@ class RegisteredMovies extends Model
         'status_approval',
         'tanggal_approval'
     ];
+
+    public function schedules()
+    {
+        return $this->hasMany(MovieSchedule::class, 'movie_id');
+    }
 }

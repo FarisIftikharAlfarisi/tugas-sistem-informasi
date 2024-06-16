@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MovieSchedule;
 use App\Models\Theater;
 use App\Models\RegisteredMovies;
+use App\Models\Seats;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\RedirectResponse;
@@ -116,7 +120,7 @@ class MovieManagementController extends Controller
         $data['status_availability'] = $request->status;
 
         Theater::create($data);
-        return redirect()->route('movie-theater')->with('success','Berhasil menambahkan theater');
+        return redirect()->route('movie-theater')->with('success','Perubahan berhasil disimpan');
     }
 
     //end of theater controlling
@@ -127,11 +131,59 @@ class MovieManagementController extends Controller
     public function schedule(){
         return view('movie.dashboard-schedule',['title'=>'Schedule | Movie Management ']);
     }
+
     public function create_schedule(){
         $title = 'New Schedule | Movie Management';
-        $data_movie = RegisteredMovies::all();
-        return view('movie.create-schedule',compact(['title','data_movie']));
+        $data_movies = RegisteredMovies::all(); //belum pasang query approval
+        $data_studio = Theater::all();
+        return view('movie.create-schedule',compact(['title','data_studio','data_movies']));
     }
+
+    // public function get_movies(){
+    //     $movies = RegisteredMovies::where('judul', 'LIKE', '%' . request('q') . '%')->paginate(10);
+    //     $results = [];
+
+    //     foreach ($movies as $movie) {
+    //         $results[] = [
+    //             'id' => $movie->movie_id,
+    //             'judul' => $movie->judul
+    //         ];
+    //     }
+
+    //     return response()->json(['results' => $results]);
+    // }
+
+    public function store_schedule(Request $request){
+        $validator = Validator::make($request->all(), [
+            'movie_id' => 'required|exists:movies,id',
+            'theater_id' => 'required|exists:theaters,id',
+            'show_start' => 'required|date_format:H:i',
+            'show_end' => 'required|date_format:H:i',
+        ]);
+
+        $time_start = \Carbon\Carbon::createFromFormat('H:i', $request->show_start)->format('H:i');
+        $time_end = \Carbon\Carbon::createFromFormat('H:i', $request->show_end)->format('H:i');
+
+        // dd([$time_start]);
+
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator);
+        }
+
+
+        $data = [
+            'movie_id' => $request->movie_id,
+            'theater_id' => $request->theater_id,
+            'show_start' => $time_start,
+            'show_end' => $time_end,
+            'status_approval' => null,
+            'tanggal_approval' => null
+        ];
+
+        MovieSchedule::create($data);
+
+    }
+
 
     //end of schedule controlling
 

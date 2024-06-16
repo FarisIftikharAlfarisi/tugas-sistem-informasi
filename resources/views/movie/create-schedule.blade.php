@@ -2,61 +2,61 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-      <h5 class="card-title">Horizontal Form</h5>
+      <h5 class="card-title text-center">Buat Jadwal Baru </h5>
 
       <!-- Horizontal Form -->
-      <form>
+      <form action="{{ route('store-schedule') }}" method="POST">
+        @csrf
         <div class="row mb-3">
-          <label for="inputEmail3" class="col-sm-2 col-form-label">Your Name</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputText">
+          <label for="select" class="col-sm-2 col-form-label">Pilih film</label>
+          <div class="col-sm-7">
+            <select class="form-select" name="selected_movies">
+                <option value="unfilled">  </option>
+                @foreach ($data_movies as $item)
+                    <option value="{{ $item->movie_id }}"> {{ $item->judul }} </option>
+                @endforeach
+            </select>
           </div>
         </div>
         <div class="row mb-3">
-          <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-          <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputEmail">
+          <label for="inputEmail3" class="col-sm-2 col-form-label">Pilih Studio</label>
+          <div class="col-sm-7">
+           <select class="form-select" name="selected_studio">
+               <option value="unfilled">  </option>
+                @foreach ($data_studio as $item)
+                    <option value="{{ $item->theater_id }}"> {{ $item->nama_theater }} </option>
+                @endforeach
+           </select>
           </div>
         </div>
         <div class="row mb-3">
-          <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-          <div class="col-sm-10">
-            <input type="password" class="form-control" id="inputPassword">
+            <div class="col-sm-2">
+                <span class="mt-2">Jam Tayang</span>
+            </div>
+          <label for="" class="col-sm-2 col-form-label">Mulai</label>
+          <div class="col-sm-2">
+            <input type="time" name="show_start" class="form-control @error('show_start')
+                is-invalid
+            @enderror" >
+            @error('show_start')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+          </div>
+          <label for="" class="col-sm-2 col-form-label">Selesai</label>
+          <div class="col-sm-2">
+            <input type="time" name="show_end" class="form-control @error('show_start')
+                is-invalid
+            @enderror" >
+            @error('show_end')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
           </div>
         </div>
-        <fieldset class="row mb-3">
-          <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
-          <div class="col-sm-10">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-              <label class="form-check-label" for="gridRadios1">
-                First radio
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-              <label class="form-check-label" for="gridRadios2">
-                Second radio
-              </label>
-            </div>
-            <div class="form-check disabled">
-              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled>
-              <label class="form-check-label" for="gridRadios3">
-                Third disabled radio
-              </label>
-            </div>
-          </div>
-        </fieldset>
-        <div class="row mb-3">
-          <div class="col-sm-10 offset-sm-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck1">
-              <label class="form-check-label" for="gridCheck1">
-                Example checkbox
-              </label>
-            </div>
-          </div>
-        </div>
+
         <div class="text-center">
           <button type="submit" class="btn btn-primary">Submit</button>
           <button type="reset" class="btn btn-secondary">Reset</button>
@@ -66,3 +66,5 @@
     </div>
   </div>
 @endsection
+
+

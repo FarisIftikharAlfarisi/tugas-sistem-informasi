@@ -11,5 +11,22 @@ class MovieSchedule extends Model
 
     protected $primaryKey = 'schedule_id';
 
-    protected $fillable = [];
+    protected $fillable = [
+        'movie_id',
+        'theater_id',
+        'show_start',
+        'show_end',
+        'status_approval',
+        'tanggal_approval'
+    ];
+
+    public function movie()
+    {
+        return $this->belongsTo(RegisteredMovies::class, 'movie_id');
+    }
+
+    public function theater()
+    {
+        return $this->belongsTo(Theater::class, 'theater_id');
+    }
 }

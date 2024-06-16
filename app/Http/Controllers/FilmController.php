@@ -149,7 +149,8 @@ class FilmController extends Controller
      */
     public function destroy($id)
     {
-        RegisteredMovies::where('movie_id', $id)->delete();
+        $to_remove = RegisteredMovies::find($id);
+        $to_remove->delete();
         return redirect()->to('/dashboard/movie/movies')->with('success', 'Film Berhasil Dihapus!');
     }
 }

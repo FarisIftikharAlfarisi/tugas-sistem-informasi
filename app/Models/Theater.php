@@ -16,8 +16,9 @@ class Theater extends Model
         'status_availability'
     ];
 
-    public function reg_movies(){
-        return $this->hasMany(RegisteredMovies::class);
+    public function schedules()
+    {
+        return $this->hasMany(MovieSchedule::class, 'theater_id');
     }
 
 }

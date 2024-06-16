@@ -8,7 +8,7 @@
     </div>
 @endif
 
-@foreach ($data_movie as $index => $data)
+{{-- @foreach ($data_movie as $index => $data)
     @if ($index % 4 == 0)
         <div class="row">
     @endif
@@ -18,7 +18,7 @@
             <img src="{{ asset('storage/img/posters/'.$data->poster) }}" alt="" style="width:240px" srcset="">
             <div class="card-body">
                 <h3>{{ $data->judul }}</h3>
-                <p>{{ $data->deskripsi }}</p>
+                <p>{{  Str::limit($data->deskripsi, 100,'...') }}</p>
             </div>
         </div>
     </div>
@@ -26,15 +26,15 @@
     @if ($index % 4 == 3)
         </div>
     @endif
-@endforeach
+@endforeach --}}
 
-@if ($index % 4 != 3)
+{{-- @if ($index % 4 != 3)
     </div>
-@endif
+@endif --}}
 
 
 
-<div class="card">
+<div class="card mt-2">
     <table class="table">
         <tr class="text-center">
             <th>Poster</th>
@@ -53,19 +53,29 @@
             <td>{{ $data->judul }}</td>
             <td>{{ $data->sutradara }}</td>
             <td>{{ $data->produser }}</td>
-            <td>{{ $data->bahasa }}</td>
-            <td>{{ $data->bahasa_subtitle }}</td>
             <td>{{ $data->genre }}</td>
             <td>{{ $data->sensor }}</td>
-            <td>{{ $data->deskripsi }}</td>
-            <td>{{ $data->status_approval }}</td>
+            <td>
+                @if ($data->status_approval === null)
+                    <span class="badge bg-secondary">Belum di Approve</span>
+                @else
+                    <span class="badge bg-success">Di Approve</span>
+                @endif
+            </td>
+            <td>
+                @if ($data->tanggal_approval === null)
+                    <span class="badge bg-secondary">Belum di Approve</span>
+                @else
+                    {{ $data->tanggal_approve }}
+                @endif
+            </td>
             <td>
                 <div class="d-flex gap-2">
                     <a href="{{ route('movie-edit-movies',['id' => $data->movie_id]) }}" class="btn btn-primary"> <i class="bi bi-pencil-square"></i> </a>
-                    <form action="" method="POST">
-                        @method('DELETE')
+                    <form action="{{ route('movie-delete-movies',['id'=>$data->movie_id]) }}" method="POST">
                         @csrf
                         <button class="btn btn-danger" onclick="return confirm('Apakah Yakin?')"><i class="bi bi-trash"></i><span data-feather="x-circle"></span></button>
+                        @method('delete')
                     </form>
                 </div>
             </td>
