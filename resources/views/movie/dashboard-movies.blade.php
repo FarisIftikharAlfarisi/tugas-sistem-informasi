@@ -32,8 +32,6 @@
     </div>
 @endif --}}
 
-
-
 <div class="card mt-2">
     <table class="table">
         <tr class="text-center">

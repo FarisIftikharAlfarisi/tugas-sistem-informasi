@@ -9,6 +9,7 @@ class Theater extends Model
 {
     use HasFactory;
 
+    protected $tables = 'theaters';
     protected $primaryKey = 'theater_id';
 
     protected $fillable = [

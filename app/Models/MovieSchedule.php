@@ -9,11 +9,15 @@ class MovieSchedule extends Model
 {
     use HasFactory;
 
+    protected $table = 'movie_schedules';
+
     protected $primaryKey = 'schedule_id';
 
+    protected $dates = ['show_start','show_end'];
+
     protected $fillable = [
-        'movie_id',
-        'theater_id',
+        'movies_id',
+        'theaters_id',
         'show_start',
         'show_end',
         'status_approval',
@@ -22,11 +26,11 @@ class MovieSchedule extends Model
 
     public function movie()
     {
-        return $this->belongsTo(RegisteredMovies::class, 'movie_id');
+        return $this->belongsTo(RegisteredMovies::class, 'movies_id', 'movie_id');
     }
 
     public function theater()
     {
-        return $this->belongsTo(Theater::class, 'theater_id');
+        return $this->belongsTo(Theater::class, 'theaters_id', 'theater_id');
     }
 }

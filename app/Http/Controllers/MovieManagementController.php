@@ -129,14 +129,24 @@ class MovieManagementController extends Controller
     //schedule controlling
 
     public function schedule(){
-        return view('movie.dashboard-schedule',['title'=>'Schedule | Movie Management ']);
+        $data_schedule = MovieSchedule::all(); #belum ada query untuk approal
+        return view('movie.dashboard-schedule',['title'=>'Schedule | Movie Management '], compact(['data_schedule']));
     }
 
     public function create_schedule(){
         $title = 'New Schedule | Movie Management';
-        $data_movies = RegisteredMovies::all(); //belum pasang query approval
+        $data_movies = RegisteredMovies::all(); //belum ada query approval
         $data_studio = Theater::all();
         return view('movie.create-schedule',compact(['title','data_studio','data_movies']));
+    }
+
+    public function edit_schedule($id) {
+        $title = 'Edit Schedule | Movie Management';
+        $data_schedule = MovieSchedule::with(['movie', 'theater'])->findOrFail($id);
+        $movies = RegisteredMovies::all();
+        $studios = Theater::all();
+
+        return view('movie.edit-schedule', compact('title', 'data_schedule', 'movies', 'studios'));
     }
 
     // public function get_movies(){
@@ -155,33 +165,72 @@ class MovieManagementController extends Controller
 
     public function store_schedule(Request $request){
         $validator = Validator::make($request->all(), [
-            'movie_id' => 'required|exists:movies,id',
-            'theater_id' => 'required|exists:theaters,id',
+            'selected_movies' => 'required',
+            'selected_studio' => 'required',
             'show_start' => 'required|date_format:H:i',
             'show_end' => 'required|date_format:H:i',
         ]);
 
-        $time_start = \Carbon\Carbon::createFromFormat('H:i', $request->show_start)->format('H:i');
-        $time_end = \Carbon\Carbon::createFromFormat('H:i', $request->show_end)->format('H:i');
+        // dd(request()->all());
 
-        // dd([$time_start]);
+        $time_start = $request->show_start;
+        $time_end = $request->show_end;
+
+        $parser_time_start = Carbon::parse($time_start);
+        $to_time_start =$parser_time_start->format('H:i:s');
+
+        $parser_time_end = Carbon::parse($time_end);
+        $to_time_end =$parser_time_end->format('H:i:s');
+
+        // dd([gettype($parser_time_start),$to_time_start, gettype($to_time_start)]);
 
         if($validator->fails()){
             return redirect()->back()->withErrors($validator);
         }
 
-
-        $data = [
-            'movie_id' => $request->movie_id,
-            'theater_id' => $request->theater_id,
-            'show_start' => $time_start,
-            'show_end' => $time_end,
-            'status_approval' => null,
-            'tanggal_approval' => null
-        ];
+        $data['movies_id'] = $request['selected_movies'];
+        $data['theaters_id'] = $request['selected_studio'];
+        $data['show_start'] = $to_time_start;
+        $data['show_end'] = $to_time_end;
+        $data['status_approval'] = null;
+        $data['tanggal_approval'] = null;
 
         MovieSchedule::create($data);
 
+        return redirect()->route('schedule-index')->with('success','Jadwal Berhasil Dibuat');
+    }
+
+    public function update_schedule(Request $request, $id) {
+        // Validate the incoming request data
+        $request->validate([
+            'selected_movies' => 'required|exists:registered_movies,movie_id',
+            'selected_studio' => 'required|exists:theaters,theater_id',
+            'show_start' => 'required|date_format:H:i',
+            'show_end' => 'required|date_format:H:i|after:show_start',
+        ]);
+
+        // Find the existing schedule
+        $schedule = MovieSchedule::findOrFail($id);
+
+        $time_start = $request->show_start;
+        $time_end = $request->show_end;
+
+        $parser_time_start = Carbon::parse($time_start);
+        $to_time_start =$parser_time_start->format('H:i:s');
+
+        $parser_time_end = Carbon::parse($time_end);
+        $to_time_end =$parser_time_end->format('H:i:s');
+
+        // Update the schedule with the validated data
+        $schedule->update([
+            'movies_id' => $request->input('selected_movies'),
+            'theaters_id' => $request->input('selected_studio'),
+            'show_start' => $to_time_start,
+            'show_end' => $to_time_end,
+        ]);
+
+        // Redirect back with a success message
+        return redirect()->route('schedule-index', ['id' => $id])->with('success', 'Perubahan Jadwal Berhasil Disimpan.');
     }
 
 
@@ -251,5 +300,10 @@ class MovieManagementController extends Controller
     {
         theater::where('theater_id', $id)->delete();
         return redirect()->to('/dashboard/movie/theater')->with('success', 'Studio Berhasil Dihapus!');
+    }
+    public function delete_schedule($id)
+    {
+        MovieSchedule::where('schedule_id', $id)->delete();
+        return redirect()->route('schedule-index')->with('success', 'Jadwal Berhasil Dihapus!');
     }
 }

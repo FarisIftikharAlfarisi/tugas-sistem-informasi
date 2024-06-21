@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('movie_schedules', function (Blueprint $table) {
             $table->id('schedule_id');
-            $table->foreignId('movie_id')->constrained()->onDelete('cascade');;
-            $table->foreignId('theater_id')->constrained()->onDelete('cascade');;
+            $table->foreignId('movies_id');
+            $table->foreignId('theaters_id');
             $table->time('show_start');
             $table->time('show_end');
-            $table->string('status_approval')->nullable();
+            $table->date('status_approval')->nullable();
             $table->date('tanggal_approval')->nullable();
             $table->timestamps();
         });

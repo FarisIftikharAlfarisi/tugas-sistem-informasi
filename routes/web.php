@@ -40,7 +40,7 @@ Route::group(['middleware'=>['auth', 'role:Admin']],function () {
 Route::group(['middleware'=>['auth', 'role:Movie Officer']],function () {
 
     //movie
-    // Route::resource('/dashboard/movie/movies',FilmController::class);
+    Route::resource('/dashboard/movie/movies',FilmController::class);
     Route::get('/dashboard/movie',[FilmController::class,'index'])->name('movie-index');
     Route::get('/dashboard/movie/movies',[FilmController::class,'movies'])->name('movie-movies');
     Route::get('/dashboard/movie/new-movies',[FilmController::class,'create'])->name('movie-new-movies');
@@ -61,6 +61,9 @@ Route::group(['middleware'=>['auth', 'role:Movie Officer']],function () {
     Route::get('dashboard/movie/schedule',[MovieManagementController::class,'schedule'])->name('schedule-index');
     Route::get('dashboard/movie/schedule/new-schedule',[MovieManagementController::class,'create_schedule'])->name('schedule-new-schedules');
     Route::post('dashboard/movie/schedule/store-schedule',[MovieManagementController::class,'store_schedule'])->name('store-schedule');
+    Route::get('dashboard/movie/schedule/edit-schedule/{id}',[MovieManagementController::class,'edit_schedule'])->name('edit-schedule');
+    Route::put('dashboard/movie/schedule/update-schedule/{id}',[MovieManagementController::class,'update_schedule'])->name('update-schedule');
+    Route::delete('dashboard/movie/schedule/delete-schedule/{id}',[MovieManagementController::class,'delete_schedule'])->name('delete-schedule');
 
     Route::get('get_movies',[MovieManagementController::class,'get_movies'])->name('schedule-getMovies');
     Route::get('get_studio',[MovieManagementController::class,'get_studio'])->name('schedule-getStudio');

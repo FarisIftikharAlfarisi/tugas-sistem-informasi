@@ -9,6 +9,7 @@ class RegisteredMovies extends Model
 {
     use HasFactory;
 
+    protected $tables = 'registered_movies';
     protected $primaryKey = 'movie_id';
 
     protected $fillable = [
