@@ -95,13 +95,13 @@
                             <div class="col-md-4">
                                 <label for="inputState" class="form-label @error('sensor') is-invalid @enderror">Sensor</label>
                                 <select id="sensor" name="sensor" class="form-select" value="{{ $data->sensor }}">
-                                    
+
                                     <option>SU (Semua Umur)</option>
                                     <option>A (Anak-anak)</option>
                                     <option>R (Remaja)</option>
                                     <option>D (Dewasa)</option>
                                     <option>BO (Bimbingan Orang Tua)</option>
-                                 
+
                                 </select>
                                 @error('sensor')
                                     <div class="invalid-feedback">
@@ -141,7 +141,7 @@
                             </div>
                             <div class= "col-md-6">
                                 <label for="" class="form-label">Tanggal diterima</label>
-                                <select id="diterima" name="tanggal_approval" class="form-select" >   
+                                <select id="diterima" name="tanggal_approval" class="form-select" >
                                     <option >none</option>
                                 </select>
                             </div>
@@ -159,9 +159,9 @@
                                     </div>
                                 </div>
 
-                                <!-- Quill Editor Default 
+                                <!-- Quill Editor Default
                                 <div name="deskripsi" class="quill-editor-default @error('deskripsi') is-invalid @enderror"  {{ old('deskripsi') }} >
-                                    
+
                                     @error('deskripsi')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -172,7 +172,7 @@
 
                             </div>
                         </div>
-    
+
 
                         <div class="text-center" >
                             <button type="reset" class="btn btn-danger">Batal</button>

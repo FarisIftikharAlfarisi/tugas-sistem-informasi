@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\RegisteredMovies;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('theaters', function (Blueprint $table) {
-            $table->id('theater_id');
-            $table->string('nama_theater');
-            $table->string('status_availability');
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id('order_id');
+            $table->foreignId('movie_id');
+            $table->foreignId('schedule_id');
+            $table->string('amount');
+            $table->string('total_payment');
+            $table->string('no_kursi');
+            $table->string('status_kursi');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('theaters');
+        Schema::dropIfExists('orders');
     }
 };

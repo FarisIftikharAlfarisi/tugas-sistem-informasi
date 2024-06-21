@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RegisteredMovies;
+use App\Models\Seats;
 use Illuminate\Http\Request;
 
 class CashierController extends Controller
@@ -16,7 +18,9 @@ class CashierController extends Controller
 
     public function order()
     {
-        return view('cashier.order',['title' => 'Order - Cashier Dashboard']);
+        $data_movie = RegisteredMovies::all();
+        $seats = Seats::all();
+        return view('cashier.order',['title' => 'Order - Cashier Dashboard'], compact(['seats','data_movie']));
     }
 
     public function save_order(Request $request){

@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class RegisteredMovies extends Model
 {
     use HasFactory;
-    
+
+    protected $tables = 'registered_movies';
     protected $primaryKey = 'movie_id';
 
     protected $fillable = [
@@ -20,10 +21,15 @@ class RegisteredMovies extends Model
         'bahasa_subtitle',
         'genre',
         'sensor',
-        'show_start',
-        'show_end',
+        'harga',
         'deskripsi',
+        'durasi',
         'status_approval',
         'tanggal_approval'
     ];
+
+    public function schedules()
+    {
+        return $this->hasMany(MovieSchedule::class, 'movie_id');
+    }
 }

@@ -21,12 +21,11 @@ return new class extends Migration
             $table->string('bahasa_subtitle');
             $table->string('genre');
             $table->string('sensor');
-            $table->string('show_start');
-            // $table->foreignId('theater_id')'); {{ belum ada modelnya }}
-            $table->string('show_end');
-            $table->string('deskripsi');
-            $table->string('status_approval');
-            $table->string('tanggal_approval');
+            $table->string('durasi');
+            $table->integer('harga');
+            $table->longText('deskripsi');
+            $table->string('status_approval')->nullable();
+            $table->date('tanggal_approval')->nullable();
             $table->timestamps();
         });
     }

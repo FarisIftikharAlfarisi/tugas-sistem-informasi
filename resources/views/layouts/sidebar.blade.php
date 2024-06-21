@@ -26,6 +26,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('schedule-index') }}" class="nav-link collapsed active" >
+                <i class="bi bi-calendar4-week"></i>
+                <span>Jadwal</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('movie-movies') }}" class="nav-link collapsed active" >
                 <i class="bi bi-film"></i>
                 <span>Film</span>
