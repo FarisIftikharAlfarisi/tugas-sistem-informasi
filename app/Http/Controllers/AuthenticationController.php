@@ -26,7 +26,7 @@ class AuthenticationController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirect()->back()->withInput()->withErrors('loginfailed');
+            return redirect()->back()->with('Error','Username atau password salah');
         }
 
         $data = [

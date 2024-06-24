@@ -23,6 +23,7 @@ class RegisteredMovies extends Model
         'sensor',
         'harga',
         'deskripsi',
+        'rating',
         'durasi',
         'status_approval',
         'tanggal_approval'

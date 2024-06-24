@@ -16,7 +16,7 @@
             <th>Film</th>
             <th>Studio</th>
             <th>Status Approve</th>
-            <th>Tgl Diterima</th>
+            <th>Tanggal Update</th>
             <th>Aksi</th>
         </tr>
         @foreach($data_schedule as $data)
@@ -39,7 +39,7 @@
                 @if ($data->tanggal_approval === null)
                     <span class="badge bg-secondary">Tidak ada update</span>
                 @else
-                    {{ $data->tanggal_approve }}
+                {{ \Carbon\Carbon::parse($data->tanggal_approval)->translatedFormat('d F Y') }}
                 @endif
             </td>
             <td>

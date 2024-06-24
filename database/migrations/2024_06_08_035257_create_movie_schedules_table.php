@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('theaters_id');
             $table->time('show_start');
             $table->time('show_end');
-            $table->date('status_approval')->nullable();
+            $table->string('status_approval')->nullable();
             $table->date('tanggal_approval')->nullable();
             $table->timestamps();
         });

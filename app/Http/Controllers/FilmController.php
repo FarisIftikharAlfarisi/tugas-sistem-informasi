@@ -49,6 +49,7 @@ class FilmController extends Controller
             'genre'  => 'required',
             'sensor'  => 'required',
             'durasi' => 'required',
+            'rating' => 'required|string',
             'harga_tiket' => 'required',
             'deskripsi' => 'required',
         ]);
@@ -70,6 +71,7 @@ class FilmController extends Controller
         $data['bahasa_subtitle'] = $request->bahasa_sub;
         $data['genre'] = $request->genre;
         $data['sensor'] = $request->sensor;
+        $data['rating'] = $request->rating;
         $data['durasi'] = $request->durasi;
         $data['harga'] = $request->harga_tiket;
         $data['deskripsi'] = $request->deskripsi;

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('sensor');
             $table->string('durasi');
             $table->integer('harga');
+            $table->string('rating');
             $table->longText('deskripsi');
             $table->string('status_approval')->nullable();
             $table->date('tanggal_approval')->nullable();

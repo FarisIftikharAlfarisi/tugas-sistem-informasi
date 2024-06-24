@@ -29,10 +29,10 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="" class="form-label @error('durasi') is-invalid @enderror">Durasi</label>
                                 <input type="text" class="form-control" id="durasi" name="durasi"
-                                    placeholder="durasi film" required autofocus value="{{ old('durasi') }}">
+                                    placeholder="Durasi Film" required autofocus value="{{ old('durasi') }}">
                                     @error('durasi')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="" class="form-label @error('sutradara') is-invalid @enderror">Sutradara</label>
                                 <input type="text" class="form-control" id="sutradara" name="sutradara" required autofocus value="{{ old('sutradara') }}"  placeholder="Nama Sutradara"  >
                                 @error('sutradara')
@@ -50,10 +50,20 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="" class="form-label @error('produser') is-invalid @enderror">Produser</label>
                                 <input type="text" class="form-control" id="produser" name="produser" placeholder="Nama Produser" required autofocus value="{{ old('produser') }}">
                                 @error('produser')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label for="" class="form-label @error('rating') is-invalid @enderror">Rating</label>
+                                <input type="text" class="form-control" id="Rating" name="rating"
+                                    placeholder="Rating Film" required autofocus value="{{ old('rating') }}">
+                                    @error('rating')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -167,31 +177,18 @@
                             </div>
                         <div> --}}
 
-                            </div>
-                        </div>
-                        <div class="card shadow-none">
-                            <div class="card-body">
-                                <div class="card-title"></div>
+                            <div class="col">
                                 <label for=""> Deskripsi Film </label>
                                 <div class="row mb-3">
                                     <div class="col-sm-10">
                                       <textarea name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror"  {{ old('deskripsi') }} style="height: 100px"></textarea>
                                     </div>
                                 </div>
-
-                                <!-- Quill Editor Default
-                                <div name="deskripsi" class="quill-editor-default @error('deskripsi') is-invalid @enderror"  {{ old('deskripsi') }} >
-
-                                    @error('deskripsi')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                                </div>
-                              End Quill Editor Default -->
-
+                            </div>
                             </div>
                         </div>
+
+
 
 
                         <div class="text-center" >

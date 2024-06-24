@@ -22,13 +22,17 @@ class CashierController extends Controller
         $seats = Seats::all();
         return view('cashier.order',['title' => 'Order - Cashier Dashboard'], compact(['seats','data_movie']));
     }
+    public function order_seat()
+    {
+        return view('cashier.order-seats',['title' => 'Order Seat']);
+    }
 
     public function save_order(Request $request){
-        $selectedSeats = json_decode($request->input('selectedSeats'));
+        $request->validate([
+            'seats' => 'required|string'
+        ]);
 
-
-
-        dd($selectedSeats);
+        dd($request->all());
     }
 
     /**
