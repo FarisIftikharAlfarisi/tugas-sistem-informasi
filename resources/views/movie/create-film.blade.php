@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
     <div class="row">
-        <form action="{{ route('store-movies')  }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('store-movie')  }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="col-lg-13 gap-3">
 
@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="">Poster </label>
-                                <input type="file" class="form-control mt-2 @error('poster') is-invalid @enderror" id="poster" name="poster"
+                                <input type="file" class="form-control mt-2 @error ('poster') is-invalid @enderror" id="poster" name="poster"
                                     placeholder="Pilih Poster">
                                 @error('poster')
                                     <div class="invalid-feedback">
@@ -19,7 +19,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="" class="form-label @error('judul') is-invalid @enderror">Judul</label>
                                 <input type="text" class="form-control" id="judul" name="judul"
                                     placeholder="Judul Film" required autofocus value="{{ old('judul') }}">
@@ -29,9 +29,19 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="col-md-3">
+                                <label for="" class="form-label @error('durasi') is-invalid @enderror">Durasi</label>
+                                <input type="text" class="form-control" id="durasi" name="durasi"
+                                    placeholder="Durasi Film" required autofocus value="{{ old('durasi') }}">
+                                    @error('durasi')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="" class="form-label @error('sutradara') is-invalid @enderror">Sutradara</label>
                                 <input type="text" class="form-control" id="sutradara" name="sutradara" required autofocus value="{{ old('sutradara') }}"  placeholder="Nama Sutradara"  >
                                 @error('sutradara')
@@ -40,10 +50,20 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="" class="form-label @error('produser') is-invalid @enderror">Produser</label>
                                 <input type="text" class="form-control" id="produser" name="produser" placeholder="Nama Produser" required autofocus value="{{ old('produser') }}">
                                 @error('produser')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label for="" class="form-label @error('rating') is-invalid @enderror">Rating</label>
+                                <input type="text" class="form-control" id="Rating" name="rating"
+                                    placeholder="Rating Film" required autofocus value="{{ old('rating') }}">
+                                    @error('rating')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -101,7 +121,7 @@
                                     <option>R (Remaja)</option>
                                     <option>D (Dewasa)</option>
                                     <option>BO (Bimbingan Orang Tua)</option>
-                                 
+
                                 </select>
                                 @error('sensor')
                                     <div class="invalid-feedback">
@@ -109,8 +129,18 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="col-md-4">
+                                <label for="" class="form-label @error('harga_tiket') is-invalid @enderror">Harga per tiket</label>
+                                <input type="text" class="form-control" id="harga_tiket" name="harga_tiket"
+                                    placeholder="Harga Tiket" required autofocus value="{{ old('harga_tiket') }}">
+                                    @error('harga_tiket')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="row mt-2">
+                        {{-- <div class="row mt-2">
                             <div class="col-md-4">
                                 <label for="" class="form-label @error('mulai_tayang') is-invalid @enderror"> Mulai</label>
                                 <input class="form-control" type="text" id="datetime_start" name="mulai_tayang" required autofocus value="{{ old('mulai_tayang') }}">
@@ -130,9 +160,9 @@
                                     </div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="row mt-2">
+                        {{-- <div class="row mt-2">
                             <div class="col-md-6">
                                 <label for="" class="form-label ">Status</label>
                                 <select id="status" name="status" class="form-select" >
@@ -141,38 +171,25 @@
                             </div>
                             <div class= "col-md-6">
                                 <label for="" class="form-label">Tanggal diterima</label>
-                                <select id="diterima" name="diterima" class="form-select" >   
+                                <select id="diterima" name="diterima" class="form-select" >
                                     <option >none</option>
                                 </select>
                             </div>
-                            <div>
+                        <div> --}}
 
-                            </div>
-                        </div>
-                        <div class="card shadow-none">
-                            <div class="card-body">
-                                <div class="card-title"></div>
+                            <div class="col">
                                 <label for=""> Deskripsi Film </label>
                                 <div class="row mb-3">
                                     <div class="col-sm-10">
                                       <textarea name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror"  {{ old('deskripsi') }} style="height: 100px"></textarea>
                                     </div>
                                 </div>
-
-                                <!-- Quill Editor Default 
-                                <div name="deskripsi" class="quill-editor-default @error('deskripsi') is-invalid @enderror"  {{ old('deskripsi') }} >
-                                    
-                                    @error('deskripsi')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                                </div>
-                              End Quill Editor Default -->
-
+                            </div>
                             </div>
                         </div>
-    
+
+
+
 
                         <div class="text-center" >
                             <button type="reset" class="btn btn-danger">Batal</button>
@@ -181,7 +198,7 @@
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
     </form>
-    </div>
+</div>
 @endsection

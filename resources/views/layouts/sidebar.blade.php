@@ -26,6 +26,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('schedule-index') }}" class="nav-link collapsed active" >
+                <i class="bi bi-calendar4-week"></i>
+                <span>Jadwal</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('movie-movies') }}" class="nav-link collapsed active" >
                 <i class="bi bi-film"></i>
                 <span>Film</span>
@@ -37,6 +43,50 @@
                 <span>Studio</span>
             </a>
         </li>
+      @endif
+
+      @if (Auth::user()->role == "Admin")
+        <li class="nav-item">
+            <a href="{{ route('dashboard_manager') }}" class="nav-link collapsed active" >
+                <i class="bi bi-grid fs-5"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-file-play fs-5"></i><span>Permohonan</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+          <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li class="nav-item">
+                <a href="{{ route('schedule-list') }}" class="nav-link collapsed" >
+                    <i class="bi bi-calendar4-week fs-5"></i>
+                    <span>Jadwal</span>
+                    {{-- <span class="badge bg-danger ms-auto me-4">1</span> --}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('movie-list') }}" class="nav-link collapsed " >
+                    <i class="bi bi-film fs-5"></i>
+                    <span>Film</span>
+                </a>
+            </li>
+
+          </ul>
+
+        <li class="nav-item">
+            <a href="{{ route('all-schedule') }}" class="nav-link collapsed active" >
+                <i class="bi bi-calendar fs-5"></i>
+                <span>List Jadwal</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('all-movie') }}" class="nav-link collapsed active" >
+                <i class="bi bi-film fs-5"></i>
+                <span>List Film</span>
+            </a>
+        </li>
+
       @endif
 
       {{-- <li class="nav-item">
