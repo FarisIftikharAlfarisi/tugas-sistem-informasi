@@ -47,7 +47,7 @@
 
       @if (Auth::user()->role == "Admin")
         <li class="nav-item">
-            <a href="#" class="nav-link collapsed active" >
+            <a href="{{ route('dashboard_manager') }}" class="nav-link collapsed active" >
                 <i class="bi bi-grid fs-5"></i>
                 <span>Dashboard</span>
             </a>
@@ -62,7 +62,7 @@
                 <a href="{{ route('schedule-list') }}" class="nav-link collapsed" >
                     <i class="bi bi-calendar4-week fs-5"></i>
                     <span>Jadwal</span>
-                    <span class="badge bg-danger ms-auto me-4">1</span>
+                    {{-- <span class="badge bg-danger ms-auto me-4">1</span> --}}
                 </a>
             </li>
             <li class="nav-item">
@@ -75,9 +75,15 @@
           </ul>
 
         <li class="nav-item">
-            <a href="#" class="nav-link collapsed active" >
-                <i class="bi bi-people fs-5"></i>
-                <span>Pengguna</span>
+            <a href="{{ route('all-schedule') }}" class="nav-link collapsed active" >
+                <i class="bi bi-calendar fs-5"></i>
+                <span>List Jadwal</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('all-movie') }}" class="nav-link collapsed active" >
+                <i class="bi bi-film fs-5"></i>
+                <span>List Film</span>
             </a>
         </li>
 

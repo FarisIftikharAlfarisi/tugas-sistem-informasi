@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id('order_id');
-            $table->foreignId('movie_id');
+            $table->string('receipt_number');
             $table->foreignId('schedule_id');
             $table->string('amount');
             $table->string('total_payment');
             $table->string('no_kursi');
             $table->string('status_kursi');
+            $table->string('status_pembayaran')->nullable();
+            $table->string('metode_pembayaran')->nullable();
+            $table->time('current_time')->nullable();
+            $table->time('jam_selesai_film')->nullable();
             $table->timestamps();
         });
     }

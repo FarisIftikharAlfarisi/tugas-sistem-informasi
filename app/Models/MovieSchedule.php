@@ -33,4 +33,8 @@ class MovieSchedule extends Model
     {
         return $this->belongsTo(Theater::class, 'theaters_id', 'theater_id');
     }
+
+    public function order(){
+        return $this->hasMany(Orders::class,'schedule_id','schedule_id');
+    }
 }

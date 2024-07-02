@@ -9,6 +9,8 @@
 @if ($data_schedule->isEmpty())
     <h1 class="text-center">No Request</h1>
 @else
+<h2 class="h2"> Schedule Request</h2>
+<hr>
 <div class="card mt-2">
     <table class="table">
         <tr>

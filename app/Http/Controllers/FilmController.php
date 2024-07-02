@@ -21,7 +21,7 @@ class FilmController extends Controller
 
     public function movies()
     {
-        $data_movie = RegisteredMovies::orderBy('created_at','asc')->get();
+        $data_movie = RegisteredMovies::all();
         $title = "New Movies | Movie Management";
         return view('movie.dashboard-movies',compact('title', 'data_movie'));
     }

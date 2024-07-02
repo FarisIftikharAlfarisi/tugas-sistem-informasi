@@ -37,6 +37,9 @@ Route::group(['middleware'=>['auth', 'role:Admin']],function () {
     Route::get('/dashboard/movies',[ManagerController::class,'movies_view'])->name('movie-list');
     Route::get('/dashboard/schedule',[ManagerController::class,'schedule_view'])->name('schedule-list');
 
+    Route::get('/dashboard/movies/all',[ManagerController::class,'all_movies'])->name('all-movie');
+    Route::get('/dashboard/schedule/all',[ManagerController::class,'all_schedule'])->name('all-schedule');
+
     //updating movie approval
     Route::post('/update-movie-approval/{id}',[ManagerController::class,'update_status_approval'])->name('update-status-approval-film');
 
@@ -84,7 +87,8 @@ Route::group(['middleware'=>['auth', 'role:Movie Officer']],function () {
 Route::group(['middleware'=>['auth', 'role:Cashier']],function () {
     Route::get('/dasboard/cashier/',[CashierController::class,'index'])->name('cashier-index');
     Route::get('/dasboard/cashier/order',[CashierController::class,'order'])->name('cashier-order');
-    Route::get('/dasboard/cashier/order-seat',[CashierController::class,'order_seat'])->name('cashier-order-seat');
+    Route::get('/dasboard/cashier/order-seat/{id}',[CashierController::class,'order_seat'])->name('cashier-order-seat');
+    Route::get('/dasboard/cashier/order-validation/{receipt_number}',[CashierController::class,'order_validation'])->name('cashier-order-validation');
     Route::post('/dasboard/cashier/order-process',[CashierController::class,'save_order'])->name('cashier-order-process');
 });
 //end of route

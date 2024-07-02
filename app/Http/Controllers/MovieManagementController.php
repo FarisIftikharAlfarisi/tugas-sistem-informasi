@@ -129,13 +129,13 @@ class MovieManagementController extends Controller
     //schedule controlling
 
     public function schedule(){
-        $data_schedule = MovieSchedule::all(); #belum ada query untuk approal
+        $data_schedule = MovieSchedule::where('status_approval','Approved')->get(); #belum ada query untuk approal
         return view('movie.dashboard-schedule',['title'=>'Schedule | Movie Management '], compact(['data_schedule']));
     }
 
     public function create_schedule(){
         $title = 'New Schedule | Movie Management';
-        $data_movies = RegisteredMovies::all(); //belum ada query approval
+        $data_movies = RegisteredMovies::where('status_approval','Approved')->get(); //belum ada query approval
         $data_studio = Theater::all();
         return view('movie.create-schedule',compact(['title','data_studio','data_movies']));
     }

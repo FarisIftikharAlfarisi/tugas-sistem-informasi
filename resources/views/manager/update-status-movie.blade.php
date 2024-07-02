@@ -10,11 +10,10 @@
     <h1 class="text-center">No Request</h1>
 @else
 
-
-
-
-<div class="card mt-2">
-    <table class="table">
+<h2 class="h2"> Movie Request </h2>
+<hr>
+<div class="card mt-2 rounded">
+    <table class="table mt-1">
         <tr>
             {{-- <th>Poster</th> --}}
             <th>Judul</th>

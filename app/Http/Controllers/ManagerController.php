@@ -26,12 +26,24 @@ class ManagerController extends Controller
         return view('manager.update-status-movie',['title'=>'Movies'],compact(['data_movie']));
     }
 
+    public function all_movies(){
+        $data_movie = RegisteredMovies::orderBy('created_at','asc')->get();
+        return view('manager.manager-movie-list',['title'=>'All Movies'], compact([ 'data_movie']));
+    }
+
+    public function all_schedule(){
+        $data_schedule = MovieSchedule::orderBy('created_at','asc')->get();
+        return view('manager.manager-schedule-list',['title'=>'schedule'] ,compact(['data_schedule']));
+    }
+
     //view untuk jadwal
     public function schedule_view()
     {
         $data_schedule = MovieSchedule::where('status_approval','=',null)->get();
         return view('manager.update-status-schedule',['title'=>'Schedule'],compact(['data_schedule']));
     }
+
+
 
     public function update_status_approval(Request $request, $id){
         $request->validate([
@@ -40,13 +52,16 @@ class ManagerController extends Controller
 
         $movie = RegisteredMovies::find($id);
         $movie['status_approval'] = $request->status_approval;
+
+        // dd($movie['status_approval']);
+
         $movie['tanggal_approval'] = Carbon::now()->toDateString();
 
-        dd($movie['status_approval'],$movie['tanggal_approval']);
+        // dd($movie['status_approval'],$movie['tanggal_approval']);
 
         $movie->update();
 
-        return redirect()->route('movie-list')->with('success','film telah di approve');
+        return redirect()->route('movie-list')->with('success','film telah di update');
     }
 
     public function update_status_approval_schedule(Request $request, $id){
