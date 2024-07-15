@@ -91,3 +91,4 @@ Route::group(['middleware'=>['auth', 'role:Cashier']],function () {
     Route::post('/dasboard/cashier/order-process',[CashierController::class,'save_order'])->name('cashier-order-process');
 });
 //end of route
+//aksakka

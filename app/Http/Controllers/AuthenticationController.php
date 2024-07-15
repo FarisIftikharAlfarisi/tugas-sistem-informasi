@@ -36,6 +36,7 @@ class AuthenticationController extends Controller
 
         if(auth()->attempt($data)){
             //if user is role level 1
+            $request->session()->regenerate();
             if(auth()->user()->role === 'Admin'){
                 return redirect()->route('dashboard_manager')->with('success','Sign up attempt success, welcome');
             }
@@ -49,6 +50,7 @@ class AuthenticationController extends Controller
             }
             // return redirect()-with('success','Sign up attempt success, welcome');
         }
+        return  back()->with('loginError', 'login Gagal!');
     }
 
     public function logout(){
