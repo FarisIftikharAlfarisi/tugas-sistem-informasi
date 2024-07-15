@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MovieSchedule;
+use App\Models\Orders;
 use App\Models\RegisteredMovies;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,10 +14,40 @@ class ManagerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return view('manager.dashboard.index',['title'=>'Dashboard']);
-    }
+    public function index(Request $request){
+    // Mendapatkan data filter dari request
+    $day = $request->input('day', date('d'));
+    $month = $request->input('month', date('m'));
+    $year = $request->input('year', date('Y'));
+
+    // Query untuk total customer
+    $total_customer = Orders::whereDay('created_at', $day)
+        ->whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->count();
+
+    // Query untuk total sales (jumlah semua amount)
+    $total_sales = Orders::whereDay('created_at', $day)
+        ->whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->sum('amount');
+
+    // Query untuk total revenue (jumlah semua total_payment)
+    $total_revenue = Orders::whereDay('created_at', $day)
+        ->whereMonth('created_at', $month)
+        ->whereYear('created_at', $year)
+        ->sum('total_payment');
+
+    return view('manager.dashboard.index', [
+        'title' => 'Dashboard',
+        'total_customer' => $total_customer,
+        'total_sales' => $total_sales,
+        'total_revenue' => $total_revenue,
+        'day' => $day,
+        'month' => $month,
+        'year' => $year,
+    ]);
+}
 
     //view untuk movies
 
@@ -55,7 +86,7 @@ class ManagerController extends Controller
 
         // dd($movie['status_approval']);
 
-        $movie['tanggal_approval'] = Carbon::now()->toDateString();
+        $movie['tanggal_approval'] = Carbon::now('Asia/Jakarta')->toDateString();
 
         // dd($movie['status_approval'],$movie['tanggal_approval']);
 
@@ -71,7 +102,7 @@ class ManagerController extends Controller
 
         $schedule = MovieSchedule::find($id);
         $schedule['status_approval'] = $request->status_approval;
-        $schedule['tanggal_approval'] = Carbon::now()->toDateString();
+        $schedule['tanggal_approval'] = Carbon::now('Asia/Jakarta')->toDateString();
 
         // dd($movie['status_approval'],$movie['tanggal_approval']);
 

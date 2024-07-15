@@ -115,10 +115,8 @@
         });
     });
   </script>
-  {{-- Initialize text editor - Movie --}}
 
-
-  <script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 </body>
 

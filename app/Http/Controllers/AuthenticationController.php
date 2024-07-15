@@ -50,7 +50,7 @@ class AuthenticationController extends Controller
             }
             // return redirect()-with('success','Sign up attempt success, welcome');
         }
-        return  back()->with('loginError', 'login Gagal!'); 
+        return  back()->with('loginError', 'login Gagal!');
     }
 
     public function logout(){
