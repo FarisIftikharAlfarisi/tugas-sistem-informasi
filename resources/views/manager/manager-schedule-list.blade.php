@@ -43,6 +43,22 @@
         </tr>
         @endforeach
     </table>
+    <div>
+        Showing
+        {{ $data_schedule->firstItem() }}
+        to
+        {{ $data_schedule->lastItem() }}
+        total
+        {{ $data_schedule->total() }}
+    </div>
+    <style>
+        .pull-right{
+            margin-left: 90%;
+        }
+    </style>
+    <div class="pull-right" >
+        {{ $data_schedule->links() }}
+    </div>
     </div>
 </div>
 
