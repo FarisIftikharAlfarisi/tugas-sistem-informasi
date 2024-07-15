@@ -29,5 +29,21 @@
     </tr>
     @endforeach
 </table>
+<div>
+    Showing
+    {{ $data_studio->firstItem() }}
+    to
+    {{ $data_studio->lastItem() }}
+    total
+    {{ $data_studio->total() }}
+</div>
+<style>
+    .pull-right{
+        margin-left: 90%;
+    }
+</style>
+<div class="pull-right" >
+    {{ $data_studio->links() }}
+</div>
 </div>
 @endsection

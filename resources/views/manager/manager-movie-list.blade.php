@@ -70,6 +70,22 @@
         </tr>
         @endforeach
     </table>
+    <div>
+        Showing
+        {{ $data_movie->firstItem() }}
+        to
+        {{ $data_movie->lastItem() }}
+        total
+        {{ $data_movie->total() }}
+    </div>
+    <style>
+        .pull-right{
+            margin-left: 90%;
+        }
+    </style>
+    <div class="pull-right" >
+        {{ $data_movie->links() }}
+    </div>
     </div>
 </div>
 @endsection

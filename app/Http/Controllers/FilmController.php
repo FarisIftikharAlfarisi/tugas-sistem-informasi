@@ -21,7 +21,7 @@ class FilmController extends Controller
 
     public function movies()
     {
-        $data_movie = RegisteredMovies::all();
+        $data_movie = RegisteredMovies::paginate(10);
         $title = "New Movies | Movie Management";
         return view('movie.dashboard-movies',compact('title', 'data_movie'));
     }

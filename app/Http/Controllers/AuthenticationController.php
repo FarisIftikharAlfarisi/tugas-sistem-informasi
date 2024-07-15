@@ -55,6 +55,6 @@ class AuthenticationController extends Controller
 
     public function logout(){
         auth()->logout();
-        return redirect('sign-in')->with('message','you logging out');
+        return redirect('/')->with('message','you logging out');
     }
 }
