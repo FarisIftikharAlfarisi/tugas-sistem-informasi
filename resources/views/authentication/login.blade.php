@@ -58,7 +58,17 @@
                   <div class="card mb-3">
 
                     <div class="card-body">
+                      @if (session()->has('succes'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">{{ session('success') }}<button type="button" class="btn-close" data-bs-dismis="alert" aria-label="close"></button></div>
 
+                      @endif
+
+                      <div class="card-body">
+                        @if (session()->has('loginError'))
+                          <div class="alert alert-danger alert-dismissible fade show" role="alert">{{ session('loginError') }}<button type="button" class="btn-close" data-bs-dismis="alert" aria-label="close"></button></div>
+  
+                        @endif
+                        
                       <div class="pt-4 pb-2">
                         <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
                         <p class="text-center small">Enter your username & password to login</p>
@@ -69,7 +79,9 @@
                         <div class="col-12">
                           <label for="email" class="form-label">Email</label>
                           <div class="input-group has-validation">
-                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <span class="input-group-text" id="inputGroupPrepend"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                              <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+                            </svg></span>
                             <input type="text" name="email" class="form-control" id="email" required>
                             @if (empty($email))
                                 <div class="invalid-feedback">Please enter your username.</div>
