@@ -20,7 +20,13 @@ class CashierController extends Controller
      */
     public function index()
     {
-        return view('cashier.index',['title' => 'Cashier Dashboard']);
+        $data_orders = Orders::orderBy('created_at', 'DESC')->paginate(20);
+        $unique_receipt_numbers = $data_orders->unique('receipt_number');
+        return view('cashier.index', [
+            'title' => 'Cashier Dashboard',
+            'data_orders' => $data_orders,
+            'unique_receipt_numbers' => $unique_receipt_numbers
+        ]);
     }
 
     public function order()
@@ -33,17 +39,20 @@ class CashierController extends Controller
     {
         $data_schedule = MovieSchedule::where('movies_id','=',$id)->get();
         $data_movie = RegisteredMovies::where('status_approval','=','Approved')->where('movie_id',$id)->first();
-        return view('cashier.order-seats',['title' => 'Order Seat for movie'],compact(['data_movie','data_schedule']));
-    }
+        $reservedSeats = Orders::where('status_kursi', 'reserved')
+                           ->pluck('no_kursi')
+                           ->toArray();
 
-    public function order_validation($rn)
-    {
-        // $data_kursi = [];
+        $currentTime = Carbon::now()->setTimezone('Asia/Jakarta');
+        $schedules = MovieSchedule::where('show_start', '<', $currentTime)->get();
 
-        $data_kursi = Orders::where('receipt_number',$rn)->pluck('no_kursi');
-        $data_order = Orders::where('receipt_number',$rn)->get();
-
-        return view('cashier.order-validation',['title' => 'order validation'], ['data_order' => $data_order,'data_kursi' => $data_kursi]);
+        foreach ($schedules as $schedule) {
+            // Update status kursi menjadi 'available' berdasarkan schedule_id
+            Orders::where('schedule_id', $schedule->schedule_id)
+                ->where('status_kursi', 'reserved')
+                ->update(['status_kursi' => 'available']);
+        }
+        return view('cashier.order-seats',['title' => 'Order Seat for movie'],compact(['data_movie','data_schedule','reservedSeats']));
     }
 
     public function save_order(Request $request){
@@ -52,7 +61,10 @@ class CashierController extends Controller
             'selected_schedule' => 'string|required',
             'seat_status' => 'required|string',
             'selected_movies' => 'required',
+            'metode_pembayaran' => 'required|string|in:CASH,QRIS'
         ]);
+
+        // dd($validatedData);
 
         $data_movie = RegisteredMovies::where('movie_id',$validatedData['selected_movies'])->first();
         $data_schedule = MovieSchedule::where('schedule_id',$validatedData['selected_schedule'])->first();
@@ -64,14 +76,14 @@ class CashierController extends Controller
         $amount_to_pay = $data_movie['harga'] * $amount_seat;
 
 
-        // $data['no_kursi'] = $validatedData['seats'];
-        // $data['status_kursi'] = $validatedData['seat_status'];
-        // $data['schedule_id'] = $validatedData['selected_schedule'];
-        // $data['total_payment'] = $amount_to_pay;
-        // $data['amount'] = $amount_seat;
-
         $reciept_number = Carbon::now()->format('Ymdhis');
         $film_show_end = $data_schedule->show_end;
+
+        if($validatedData['metode_pembayaran']){
+            $isSuccess = 'Berhasil';
+        }else{
+            $isSuccess = 'Gagal';
+        }
 
         foreach ($seatsArray as $seat) {
             $data = [
@@ -81,15 +93,19 @@ class CashierController extends Controller
                 'total_payment' => $amount_to_pay,  // Price per seat
                 'no_kursi' => $seat,
                 'status_kursi' => $validatedData['seat_status'],
-                'jam_selesai_film' => $film_show_end
+                'jam_selesai_film' => $film_show_end,
+                'current_time' => Carbon::now('Asia/Jakarta')->format('his'),
+                'metode_pembayaran' => $validatedData['metode_pembayaran'],
+                'status_pembayaran'=> $isSuccess
             ];
-            $data_order = Orders::create($data);
+            Orders::create($data);
         }
 
+        return redirect()->route('cashier-index')->with('success','Transaksi Berhasil!');
+    }
 
-        $this->order_validation($reciept_number);
+    public function update_order(){
 
-        return redirect()->route('cashier-order-validation', ['receipt_number' => $data_order->receipt_number]);
     }
 
     /**

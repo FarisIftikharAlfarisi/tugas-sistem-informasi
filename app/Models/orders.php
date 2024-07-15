@@ -18,6 +18,7 @@ class Orders extends Model
         ,'no_kursi'
         ,'status_kursi'
         ,'status_pembayaran'
+        ,'metode_pembayaran'
         ,'current_time'
         ,'jam_selesai_film'
     ];

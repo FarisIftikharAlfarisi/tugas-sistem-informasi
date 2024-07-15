@@ -14,12 +14,6 @@
 
     <hr>
 
-    {{-- <select class="form-control" name="selected_schedule" id="selected_schedule">
-        <option value="null" > Pilih Jadwal </option>
-        @foreach ($data_schedule as $data_schedule)
-            <option value="{{ $data_schedule->schedule_id }}"> Jadwal ke-{{ $loop->iteration }} {{ Carbon\Carbon::parse($data_schedule->show_start)->format('H:i') }} - {{ Carbon\Carbon::parse($data_schedule->show_end)->format('H:i') }} </option>
-        @endforeach
-        </select> --}}
     <label for="seats">Choose your seats:</label><br>
     <div id="seat-map">
         <!-- Gambarkan kursi di sini -->
@@ -30,7 +24,7 @@
                     @php
                         $seat = $row . $num;
                     @endphp
-                    <button type="button" class="seat-button" data-seat="{{ $seat }}" onclick="toggleSeat('{{ $seat }}')">
+                    <button type="button" class="seat-button {{ in_array($seat, $reservedSeats) ? 'reserved' : '' }}" data-seat="{{ $seat }}" onclick="toggleSeat('{{ $seat }}')">
                         {{ $seat }}
                     </button>
                 </div>
@@ -43,8 +37,67 @@
     <input type="hidden" name="selected_schedule" id="selectedScheduleInput">
     <input type="hidden" name="selected_movies" value="{{ $data_movie->movie_id }}">
     <input type="text" name="seat_status" value="reserved" hidden>
-    <button type="submit" class="btn btn-primary ms-auto">Book Now</button>
+    <button type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#confirmModal">Book Now</button>
+    <!-- Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Pemesanan</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td>Film</td>
+                        <td>:</td>
+                        <td>{{ $data_movie->judul }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jadwal</td>
+                        <td>:</td>
+                        <td><span id="modalSchedule"></span></td>
+                    </tr>
+                    <tr>
+                        <td> No. Kursi </td>
+                        <td>:</td>
+                        <td><span id="modalSeats"></span></td>
+                    </tr>
+                    <tr>
+                        <td> Harga Tiket </td>
+                        <td>:</td>
+                        <td>{{ $data_movie->harga }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Bayar</td>
+                        <td>:</td>
+                        <td><span id="modalTotal"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Metode Pembayaran</td>
+                        <td>:</td>
+                        <td>
+                            <select name="metode_pembayaran" id="metode_pembayaran">
+                                <option value="null">Pilih Metode Pembayaran</option>
+                                <option value="CASH">Cash</option>
+                                <option value="QRIS">QRIS</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <div id="qris-container" style="display:none;">
+                    <img id="qris-image" width="250px" align="center" src="{{ asset('storage/img/add-on/QR_dana_faris.jpeg') }}" alt="QRIS">
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="Submit" class="btn btn-primary" id="confirmBooking">Confirm Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </form>
+
 
 <style>
     .row { display: flex; }
@@ -53,16 +106,40 @@
     .schedule-button.selected { background-color: #4CAF50; color: white; }
     .seat-button.selected { background-color: #4CAF50; color: white; }
     .seat-button.reserved {background-color: #da5050; color: white; cursor:not-allowed }
+    .seat-button.not-allowed { cursor: not-allowed; }
 </style>
 
 <script>
     let selectedSeats = [];
     let selectedSchedule = null;
     let jumlah_kursi = null
+    const ticketPrice = {{ $data_movie->harga }};
+
+    function getSeatCoordinates(seat) {
+        const row = seat[0];
+        const num = parseInt(seat.slice(1));
+        return { row, num };
+    }
+
+    function areSeatsAdjacent(seat1, seat2) {
+        const coord1 = getSeatCoordinates(seat1);
+        const coord2 = getSeatCoordinates(seat2);
+
+        // Check if seats are in the same row and next to each other
+        return coord1.row === coord2.row && Math.abs(coord1.num - coord2.num) === 1;
+    }
+
+    function canSelectSeat(seat) {
+        if (selectedSeats.length === 0) {
+            return true;
+        }
+
+        return selectedSeats.some(selectedSeat => areSeatsAdjacent(selectedSeat, seat));
+    }
 
     function toggleSeat(seat) {
         const seatButton = document.querySelector(`button[data-seat="${seat}"]`);
-        if (seatButton.classList.contains('reserved')) {
+        if (seatButton.classList.contains('reserved') || seatButton.classList.contains('not-allowed')) {
             return;
         }
 
@@ -70,8 +147,14 @@
             selectedSeats = selectedSeats.filter(s => s !== seat);
             seatButton.classList.remove('selected');
         } else {
-            selectedSeats.push(seat);
-            seatButton.classList.add('selected');
+            if (canSelectSeat(seat)) {
+                selectedSeats.push(seat);
+                seatButton.classList.add('selected');
+            } else {
+                seatButton.classList.add('not-allowed');
+                setTimeout(() => seatButton.classList.remove('not-allowed'), 3000);
+                return;
+            }
         }
         document.getElementById('seatsInput').value = selectedSeats.join(',');
     }
@@ -94,6 +177,25 @@
             event.preventDefault();
             selectSchedule(this.dataset.schedule);
         });
+    });
+
+    document.querySelector('[data-bs-toggle="modal"]').addEventListener('click', function() {
+        const schedule = document.querySelector('.schedule-button.selected').textContent;
+        const seats = selectedSeats.join(', ');
+        const total = ticketPrice * selectedSeats.length;
+
+        document.getElementById('modalSchedule').textContent = schedule;
+        document.getElementById('modalSeats').textContent = seats;
+        document.getElementById('modalTotal').textContent = total;
+    });
+
+    document.getElementById('metode_pembayaran').addEventListener('change', function() {
+        var qrisContainer = document.getElementById('qris-container');
+        if (this.value === 'QRIS') {
+            qrisContainer.style.display = 'block';
+        } else {
+            qrisContainer.style.display = 'none';
+        }
     });
 
 </script>
