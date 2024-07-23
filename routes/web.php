@@ -89,6 +89,7 @@ Route::group(['middleware'=>['auth', 'role:Cashier']],function () {
     Route::get('/dasboard/cashier/order',[CashierController::class,'order'])->name('cashier-order');
     Route::get('/dasboard/cashier/order-seat/{id}',[CashierController::class,'order_seat'])->name('cashier-order-seat');
     Route::post('/dasboard/cashier/order-process',[CashierController::class,'save_order'])->name('cashier-order-process');
+    Route::post('/dasboard/cashier/update_kursi',[CashierController::class,'update_jam'])->name('update_jam');
     Route::get('/dasboard/cashier/cetak-struk/{id}',[CashierController::class,'cetak_struk'])->name('cashier-cetak-struk');
 });
 //end of route
