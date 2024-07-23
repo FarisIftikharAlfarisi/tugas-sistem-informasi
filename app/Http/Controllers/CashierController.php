@@ -10,7 +10,9 @@ use App\Models\MovieSchedule;
 use App\Models\RegisteredMovies;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\ValidatedData;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 use Spatie\Backtrace\Arguments\Reducers\DateTimeZoneArgumentReducer;
 
 class CashierController extends Controller
@@ -29,6 +31,21 @@ class CashierController extends Controller
         ]);
     }
 
+    public function  update_jam(Request $request){
+        $data = $request->all();
+
+        $data_time = Orders::selectRaw('DATE_FORMAT(created_at, "%H:%i:%s") as time_only')
+        ->whereDate('created_at', Carbon::today()->setTimezone('Asia/Jakarta'))
+        ->get();
+
+        $data_to_update['current_time'] = $data['jam'];
+        if($data['jam'] > $data_time){
+            Orders::where('time_only')->update($data_to_update);
+        }
+
+        return redirect()->route('cashier-order');
+    }
+
     public function order()
     {
         $data_movie = RegisteredMovies::where('status_approval','=','Approved')->get();
@@ -39,20 +56,22 @@ class CashierController extends Controller
     {
         $data_schedule = MovieSchedule::where('movies_id','=',$id)->get();
         $data_movie = RegisteredMovies::where('status_approval','=','Approved')->where('movie_id',$id)->first();
-        $reservedSeats = Orders::where('status_kursi', 'reserved')
-                           ->pluck('no_kursi')
-                           ->toArray();
-
         $currentTime = Carbon::now()->setTimezone('Asia/Jakarta');
-        $schedules = MovieSchedule::where('show_start', '<', $currentTime)->get();
+         // Ambil kursi yang dipesan berdasarkan jadwal yang diambil
+        //  $reservedSeats = Orders::where('status_kursi', 'reserved')
+        //  ->get(['schedule_id', 'no_kursi'])
+        //  ->toArray();
 
-        foreach ($schedules as $schedule) {
-            // Update status kursi menjadi 'available' berdasarkan schedule_id
-            Orders::where('schedule_id', $schedule->schedule_id)
-                ->where('status_kursi', 'reserved')
-                ->update(['status_kursi' => 'available']);
-        }
-        return view('cashier.order-seats',['title' => 'Order Seat for movie'],compact(['data_movie','data_schedule','reservedSeats']));
+        $reservedSeats = Orders::select('schedule_id', 'no_kursi')
+        ->get()
+        ->toArray();
+
+        $movie_ends_time = MovieSchedule::select('schedule_id', 'show_end')
+        ->where('movies_id', $id)
+        ->get()
+        ->toArray();
+
+        return view('cashier.order-seats',['title' => 'Order Seat for movie'],compact(['data_movie','data_schedule','reservedSeats','movie_ends_time','currentTime']));
     }
 
     public function save_order(Request $request){
@@ -94,7 +113,7 @@ class CashierController extends Controller
                 'no_kursi' => $seat,
                 'status_kursi' => $validatedData['seat_status'],
                 'jam_selesai_film' => $film_show_end,
-                'current_time' => Carbon::now('Asia/Jakarta')->format('his'),
+                'current_time' => Carbon::now()->setTimezone('Asia/Jakarta')->format('h:i:s'),
                 'metode_pembayaran' => $validatedData['metode_pembayaran'],
                 'status_pembayaran'=> $isSuccess
             ];

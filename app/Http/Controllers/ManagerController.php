@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MovieSchedule;
-use App\Models\Orders;
-use App\Models\RegisteredMovies;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use DateTime;
+use Carbon\Carbon;
+use App\Models\Orders;
+use Illuminate\Http\Request;
+use App\Models\MovieSchedule;
+use App\Models\RegisteredMovies;
+use Illuminate\Support\Facades\DB;
+
 
 class ManagerController extends Controller
 {
@@ -15,39 +17,47 @@ class ManagerController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request){
-    // Mendapatkan data filter dari request
-    $day = $request->input('day', date('d'));
-    $month = $request->input('month', date('m'));
-    $year = $request->input('year', date('Y'));
+        $orders = Orders::all();
+        $unique_receipt_numbers = $orders->unique('receipt_number');
+        $unique_receipt_numbers = $unique_receipt_numbers->sortByDesc('receipt_number')->take(5);
 
-    // Query untuk total customer
-    $total_customer = Orders::whereDay('created_at', $day)
-        ->whereMonth('created_at', $month)
-        ->whereYear('created_at', $year)
-        ->count();
+        $sql = "
+            SELECT registered_movies.judul AS judul,
+                COUNT(orders.order_id) AS jumlah_penjualan_tiket,
+                SUM(CAST(orders.total_payment AS DECIMAL(10,2))) AS total_pemasukan
+            FROM orders
+            JOIN movie_schedules ON orders.schedule_id = movie_schedules.schedule_id
+            JOIN registered_movies ON movie_schedules.movies_id = registered_movies.movie_id
+            GROUP BY registered_movies.judul
+            ORDER BY jumlah_penjualan_tiket DESC
+        ";
 
-    // Query untuk total sales (jumlah semua amount)
-    $total_sales = Orders::whereDay('created_at', $day)
-        ->whereMonth('created_at', $month)
-        ->whereYear('created_at', $year)
-        ->sum('amount');
+        $topMovies = DB::select($sql);
 
-    // Query untuk total revenue (jumlah semua total_payment)
-    $total_revenue = Orders::whereDay('created_at', $day)
-        ->whereMonth('created_at', $month)
-        ->whereYear('created_at', $year)
-        ->sum('total_payment');
+        $order = Orders::select(
+            DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+            DB::raw('SUM(total_payment) as total_sales'),
+            DB::raw('COUNT(no_kursi) as total_customers')
+        )
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
 
-    return view('manager.dashboard.index', [
-        'title' => 'Dashboard',
-        'total_customer' => $total_customer,
-        'total_sales' => $total_sales,
-        'total_revenue' => $total_revenue,
-        'day' => $day,
-        'month' => $month,
-        'year' => $year,
-    ]);
-}
+        // Format data untuk dikirim ke view
+        $months = $order->pluck('month');
+        $sales = $order->pluck('total_sales');
+        $customers = $order->pluck('total_customers');
+
+        return view('manager.dashboard.index', [
+            'title' => 'Dashboard',
+            'orders' => $orders,
+            'unique_receipt_numbers' => $unique_receipt_numbers,
+            'topMovies' => $topMovies,
+            'months' => $months,
+            'sales' => $sales,
+            'customers' => $customers
+        ]);
+    }
 
     //view untuk movies
 

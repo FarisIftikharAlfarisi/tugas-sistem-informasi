@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 //login and logout
-Route::get('/sign-in',[AuthenticationController::class,'signin'])->name('sign-in');
+Route::get('/',[AuthenticationController::class,'signin'])->name('sign-in');
 Route::post('/login-process',[AuthenticationController::class,'authenticate'])->name('login-process');
 Route::get('/logout',[AuthenticationController::class,'logout'])->name('sign-out');
 //end login and logout
@@ -89,6 +89,7 @@ Route::group(['middleware'=>['auth', 'role:Cashier']],function () {
     Route::get('/dasboard/cashier/order',[CashierController::class,'order'])->name('cashier-order');
     Route::get('/dasboard/cashier/order-seat/{id}',[CashierController::class,'order_seat'])->name('cashier-order-seat');
     Route::post('/dasboard/cashier/order-process',[CashierController::class,'save_order'])->name('cashier-order-process');
+    Route::post('/dasboard/cashier/update_kursi',[CashierController::class,'update_jam'])->name('update_jam');
 });
 //end of route
 //aksakka

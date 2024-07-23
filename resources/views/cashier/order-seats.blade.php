@@ -18,8 +18,8 @@
     <div id="seat-map">
         <!-- Gambarkan kursi di sini -->
         @foreach(range('A', 'H') as $row)
-            <div class="row">
-                @foreach(range(1, 14) as $num)
+        <div class="row">
+            @foreach(range(1, 14) as $num)
                 <div class="col">
                     @php
                         $seat = $row . $num;
@@ -28,7 +28,7 @@
                         {{ $seat }}
                     </button>
                 </div>
-                @endforeach
+            @endforeach
             </div>
         @endforeach
     </div>
@@ -114,6 +114,9 @@
     let selectedSchedule = null;
     let jumlah_kursi = null
     const ticketPrice = {{ $data_movie->harga }};
+    const reservedSeats = @json($reservedSeats);
+    const movieEndTimes = @json($movie_ends_time);
+    const currentTime = new Date('{{ $currentTime }}');
 
     function getSeatCoordinates(seat) {
         const row = seat[0];
@@ -125,7 +128,7 @@
         const coord1 = getSeatCoordinates(seat1);
         const coord2 = getSeatCoordinates(seat2);
 
-        // Check if seats are in the same row and next to each other
+        // di cek kalau kursinya sebelahan atau nggak
         return coord1.row === coord2.row && Math.abs(coord1.num - coord2.num) === 1;
     }
 
@@ -159,6 +162,30 @@
         document.getElementById('seatsInput').value = selectedSeats.join(',');
     }
 
+    // function selectSchedule(scheduleId) {
+    //     const scheduleButtons = document.querySelectorAll('.schedule-button');
+    //     scheduleButtons.forEach(button => {
+    //         button.classList.remove('selected');
+    //     });
+
+    //     const selectedButton = document.querySelector(`.schedule-button[data-schedule="${scheduleId}"]`);
+    //     selectedButton.classList.add('selected');
+
+    //     selectedSchedule = scheduleId;
+    //     document.getElementById('selectedScheduleInput').value = selectedSchedule;
+
+    //     // Filter reserved seats based on selected schedule
+    //     document.querySelectorAll('.seat-button').forEach(button => {
+    //         const seat = button.dataset.seat;
+    //         const isReserved = reservedSeats.some(rs => rs.schedule_id == scheduleId && rs.no_kursi == seat);
+    //         if (isReserved) {
+    //             button.classList.add('reserved');
+    //         } else {
+    //             button.classList.remove('reserved');
+    //         }
+    //     });
+    // }
+
     function selectSchedule(scheduleId) {
         const scheduleButtons = document.querySelectorAll('.schedule-button');
         scheduleButtons.forEach(button => {
@@ -170,6 +197,26 @@
 
         selectedSchedule = scheduleId;
         document.getElementById('selectedScheduleInput').value = selectedSchedule;
+
+        // filter reserved seats berdasarkan data dari database
+        document.querySelectorAll('.seat-button').forEach(button => {
+            const seat = button.dataset.seat;
+            const isReserved = reservedSeats.some(rs => rs.schedule_id == scheduleId && rs.no_kursi == seat);
+            if (isReserved) {
+                button.classList.add('reserved');
+            } else {
+                button.classList.remove('reserved');
+            }
+        });
+
+        // menghapus kelas css reserved kalau current time > jam_selesai_film dari DB
+        const endTime = movieEndTimes.find(mt => mt.schedule_id == scheduleId).jam_selesai_film;
+        const endTimeDate = new Date(endTime);
+        if (currentTime > endTimeDate) {
+            document.querySelectorAll('.seat-button.reserved').forEach(button => {
+                button.classList.remove('reserved');
+            });
+        }
     }
 
     document.querySelectorAll('.schedule-button').forEach(button => {

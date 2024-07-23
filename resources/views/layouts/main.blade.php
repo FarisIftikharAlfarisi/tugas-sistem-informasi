@@ -83,40 +83,10 @@
   <!-- Template Main JS File -->
   <script src="{{ asset('DashboardTemplate/NiceAdmin/assets/js/main.js') }}"></script>
 
-  {{-- CDN Select2 --}}
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-  {{-- inisalisasi select2 --}}
-  <script>
-    $(document).ready(function(){
-        $("#selectMovies").select2({
-            placeholder: "Select a movie",
-            ajax:{
-                url: "{{ route('schedule-getMovies') }}",
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        q: params.term // search term
-                    };
-                },
-                processResults: function(data) {
-                    return {
-                        results: $.map(data, function(item) {
-                            return {
-                                id: item.id,
-                                text: item.judul
-                            }
-                        })
-                    };
-                },
-                cache: true
-            }
-        });
-    });
-  </script>
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.50.0/apexcharts.min.js"></script>
 
 </body>
 
