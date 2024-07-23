@@ -17,6 +17,7 @@
             <th>Movie</th>
             <th>Schedule</th>
             <th>Details</th>
+            <th>Cetak Tiket</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +30,10 @@
                 <td>
                     <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detailsModal-{{ $order->receipt_number }}">View Details</button>
                 </td>
+                <td>
+                    <a href="{{ url('/dasboard/cashier/cetak-struk/'.$order->receipt_number) }}" class="btn btn-primary"> Cetak Tiket</a>
+                 </td>
+                
             </tr>
         @endforeach
     </tbody>
@@ -86,7 +91,7 @@
                             <td>{{ $order->amount }}</td>
                             <td>{{ $order->total_payment }}</td>
                             <td>{{ $order->metode_pembayaran }}</td>
-                        </tr>
+                        </tr>  
                     </tbody>
                 </table>
             </div>
@@ -96,10 +101,11 @@
         </div>
     </div>
 </div>
+
 @endforeach
 
 @endsection
-
+{{ $data_orders->links() }}
 <style>
     .seat-button { margin: 5px; padding: 10px; border-radius: 5px; background-color: #fff; border: 1px solid #ccc; cursor:default;}
 </style>

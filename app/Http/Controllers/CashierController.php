@@ -123,6 +123,12 @@ class CashierController extends Controller
         return redirect()->route('cashier-index')->with('success','Transaksi Berhasil!');
     }
 
+    public function cetak_struk($receipt_number)
+{
+    $data_orders = Orders::where('receipt_number', $receipt_number)->get();
+    $title = "Cashier | Cetak Struk";
+    return view('cashier.cetak-struk', compact('title', 'data_orders'));
+}
     public function update_order(){
 
     }

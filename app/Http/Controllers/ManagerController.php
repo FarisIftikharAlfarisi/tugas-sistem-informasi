@@ -63,24 +63,24 @@ class ManagerController extends Controller
 
     public function movies_view()
     {
-        $data_movie = RegisteredMovies::where('status_approval','=',null)->get();
+        $data_movie = RegisteredMovies::where('status_approval','=',null)->paginate(10);
         return view('manager.update-status-movie',['title'=>'Movies'],compact(['data_movie']));
     }
 
     public function all_movies(){
-        $data_movie = RegisteredMovies::orderBy('created_at','asc')->get();
+        $data_movie = RegisteredMovies::orderBy('created_at','asc')->paginate(10);
         return view('manager.manager-movie-list',['title'=>'All Movies'], compact([ 'data_movie']));
     }
 
     public function all_schedule(){
-        $data_schedule = MovieSchedule::orderBy('created_at','asc')->get();
+        $data_schedule = MovieSchedule::orderBy('created_at','asc')->paginate(10);
         return view('manager.manager-schedule-list',['title'=>'schedule'] ,compact(['data_schedule']));
     }
 
     //view untuk jadwal
     public function schedule_view()
     {
-        $data_schedule = MovieSchedule::where('status_approval','=',null)->get();
+        $data_schedule = MovieSchedule::where('status_approval','=',null)->paginate(10);
         return view('manager.update-status-schedule',['title'=>'Schedule'],compact(['data_schedule']));
     }
 

@@ -93,7 +93,7 @@ class MovieManagementController extends Controller
     //start of theater controlling
     public function theater(){
         $title = "Theater | Movie Management";
-        $data_studio = Theater::all();
+        $data_studio = Theater::paginate(10);
         return view('theater.index',compact(['title','data_studio']));
     }
     public function create_theater(){
@@ -129,7 +129,7 @@ class MovieManagementController extends Controller
     //schedule controlling
 
     public function schedule(){
-        $data_schedule = MovieSchedule::where('status_approval','Approved')->get(); #belum ada query untuk approal
+        $data_schedule = MovieSchedule::where('status_approval','Approved')->paginate(10); #belum ada query untuk approal
         return view('movie.dashboard-schedule',['title'=>'Schedule | Movie Management '], compact(['data_schedule']));
     }
 
